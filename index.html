@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB Mock CBT 2026/2027</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --g1:#006837; --g2:#00a651; --g3:#1dcc7a;
+  --gold:#f5a623; --gold2:#ffd166;
+  --dark:#050e1a; --navy:#0b1f35; --navy2:#112840;
+  --surface:#ffffff; --surface2:#f0f7f2; --surface3:#e5f2ea;
+  --border:#c8dfd0; --border2:#a8ccb4;
+  --text:#0d1f0d; --text2:#3a5a3a; --text3:#6a8a6a;
+  --red:#e03131; --amber:#f08c00; --blue:#1c7ed6;
+  --radius:14px; --radius-sm:8px;
+  --shadow:0 4px 24px rgba(0,104,55,.12);
+  --shadow-lg:0 12px 48px rgba(0,104,55,.18);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--dark);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── BACKGROUND PARTICLES ── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── PAGE WRAPPER ── */
+.page{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
+.page.active{display:flex;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-40px);}to{opacity:1;transform:translateX(0);}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.88);}to{opacity:1;transform:scale(1);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+@keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
+@keyframes ripple{0%{transform:scale(0);opacity:.6;}100%{transform:scale(4);opacity:0;}}
+@keyframes countUp{from{transform:scale(1.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(0,166,81,.3);}50%{box-shadow:0 0 24px rgba(0,166,81,.7);}}
+@keyframes tickIn{0%{transform:scale(0) rotate(-90deg);}70%{transform:scale(1.2) rotate(8deg);}100%{transform:scale(1) rotate(0);}}
+@keyframes floatUp{0%{transform:translateY(0);}50%{transform:translateY(-6px);}100%{transform:translateY(0);}}
+
+.anim-fadeup{animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both;}
+.anim-fadein{animation:fadeIn .4s ease both;}
+.anim-scalein{animation:scaleIn .45s cubic-bezier(.22,1,.36,1) both;}
+
+/* ── HEADER ── */
+.top-bar{
+  background:linear-gradient(135deg,rgba(5,14,26,.97),rgba(11,31,53,.97));
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,166,81,.2);
+  padding:14px 24px;
+  display:flex;align-items:center;gap:14px;
+  position:relative;z-index:10;
+  flex-shrink:0;
+}
+.top-bar::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--g1),var(--g2),var(--gold),var(--g2),var(--g1));
+  background-size:200% 100%;
+  animation:shimmer 3s linear infinite;
+}
+.logo-ring{
+  width:54px;height:54px;border-radius:50%;
+  background:radial-gradient(circle,#00a651,#006837);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px var(--gold),0 0 0 4px rgba(245,166,35,.2);
+  flex-shrink:0;animation:floatUp 3s ease-in-out infinite;
+  font-size:1.5rem;font-weight:800;color:white;font-family:'Space Mono',monospace;
+  letter-spacing:-1px;
+}
+.top-bar-text h1{font-size:.95rem;font-weight:700;color:white;font-family:'Space Grotesk',sans-serif;}
+.top-bar-text p{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:1px;}
+
+/* ── WELCOME PAGE ── */
+#page-welcome{
+  background:linear-gradient(160deg,var(--dark) 0%,#071a2b 50%,#082014 100%);
+  justify-content:space-between;
+}
+.welcome-hero{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 20px;
+  text-align:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,166,81,.12);border:1px solid rgba(0,166,81,.3);
+  border-radius:100px;padding:6px 16px;
+  font-size:.75rem;font-weight:600;color:var(--g3);
+  margin-bottom:20px;
+  animation:fadeUp .4s .1s both;
+}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--g3);animation:pulse 1.5s infinite;}
+.hero-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:2.2rem;font-weight:700;color:white;
+  line-height:1.15;margin-bottom:10px;
+  animation:fadeUp .5s .15s both;
+}
+.hero-title span{color:var(--gold);}
+.hero-sub{
+  font-size:.9rem;color:rgba(255,255,255,.5);
+  max-width:380px;line-height:1.6;
+  animation:fadeUp .5s .2s both;
+  margin-bottom:36px;
+}
+
+.glass-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  padding:32px 28px;
+  backdrop-filter:blur(16px);
+  width:100%;max-width:460px;
+  animation:fadeUp .5s .25s both;
+  box-shadow:0 8px 40px rgba(0,0,0,.3);
+}
+
+.field-wrap{margin-bottom:20px;}
+.field-label{
+  display:block;font-size:.75rem;font-weight:600;
+  color:rgba(255,255,255,.6);text-transform:uppercase;
+  letter-spacing:.8px;margin-bottom:8px;
+}
+.field-input{
+  width:100%;padding:14px 18px;
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  color:white;font-family:'DM Sans',sans-serif;font-size:1rem;
+  outline:none;transition:all .25s;
+}
+.field-input:focus{
+  border-color:var(--g2);
+  background:rgba(0,166,81,.08);
+  box-shadow:0 0 0 3px rgba(0,166,81,.15);
+}
+.field-input::placeholder{color:rgba(255,255,255,.25);}
+.field-input.error{border-color:var(--red);box-shadow:0 0 0 3px rgba(224,49,49,.15);}
+.field-error{
+  font-size:.78rem;color:#ff6b6b;margin-top:6px;
+  display:none;animation:fadeIn .2s;
+}
+.field-error.show{display:block;}
+
+.btn-primary{
+  width:100%;padding:15px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;font-family:'Space Grotesk',sans-serif;
+  font-size:1rem;font-weight:700;cursor:pointer;
+  transition:all .25s;position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,104,55,.35);
+  letter-spacing:.3px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,104,55,.45);}
+.btn-primary:active{transform:translateY(0);}
+.btn-primary .ripple-el{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.35);
+  transform:scale(0);animation:ripple .6s linear;
+  pointer-events:none;
+}
+
+/* ── INSTRUCTIONS PAGE ── */
+#page-instructions{
+  background:linear-gradient(160deg,var(--dark) 0%,#071a2b 50%,#082014 100%);
+}
+.inst-body{flex:1;padding:24px 20px;max-width:640px;margin:0 auto;width:100%;}
+
+.info-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin-bottom:24px;
+  animation:fadeUp .4s .1s both;
+}
+.info-chip{
+  background:rgba(0,166,81,.08);border:1px solid rgba(0,166,81,.2);
+  border-radius:12px;padding:16px 12px;text-align:center;
+}
+.info-chip .val{
+  font-size:1.6rem;font-weight:700;color:var(--g3);
+  font-family:'Space Mono',monospace;
+}
+.info-chip .lbl{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:3px;}
+
+.notice-strip{
+  background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);
+  border-radius:10px;padding:12px 16px;
+  font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5;
+  margin-bottom:24px;animation:fadeUp .4s .15s both;
+}
+
+.sec-label{
+  font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.8px;color:var(--g3);
+  margin-bottom:12px;
+  animation:fadeUp .4s .2s both;
+}
+.sel-info{
+  font-size:.82rem;color:rgba(255,255,255,.45);
+  margin-bottom:14px;text-align:center;
+  animation:fadeUp .4s .22s both;
+}
+
+.subjects-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-bottom:24px;
+  animation:fadeUp .4s .25s both;
+}
+.subj-card{
+  background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:14px 16px;
+  cursor:pointer;transition:all .22s;
+  display:flex;align-items:center;gap:12px;
+  position:relative;overflow:hidden;
+}
+.subj-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 50%,rgba(0,166,81,.12),transparent 70%);
+  opacity:0;transition:opacity .25s;
+}
+.subj-card:hover:not(.locked):not(.capped)::before{opacity:1;}
+.subj-card:hover:not(.locked):not(.capped){
+  border-color:rgba(0,166,81,.4);transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,166,81,.15);
+}
+.subj-card.selected{
+  border-color:var(--g2);
+  background:rgba(0,166,81,.1);
+  box-shadow:0 0 0 1px rgba(0,166,81,.3);
+}
+.subj-card.locked{
+  border-color:rgba(0,166,81,.35);
+  background:rgba(0,166,81,.07);
+  cursor:default;
+}
+.subj-card.capped{opacity:.4;cursor:not-allowed;pointer-events:none;}
+.subj-icon{font-size:1.3rem;flex-shrink:0;}
+.subj-name{font-size:.83rem;font-weight:600;color:white;flex:1;}
+.subj-check{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .2s;font-size:.65rem;
+}
+.subj-card.selected .subj-check,
+.subj-card.locked .subj-check{
+  background:var(--g2);border-color:var(--g2);color:white;
+  animation:tickIn .3s cubic-bezier(.22,1,.36,1);
+}
+
+#btn-start{
+  display:none;
+  animation:scaleIn .35s cubic-bezier(.22,1,.36,1);
+}
+
+/* ── EXAM PAGE ── */
+#page-exam{background:var(--surface2);flex-direction:column;}
+
+.exam-topbar{
+  background:white;
+  border-bottom:2px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 20px;flex-shrink:0;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  position:sticky;top:0;z-index:20;
+}
+.user-pill{
+  display:flex;flex-direction:column;
+}
+.user-pill strong{font-size:.9rem;font-weight:700;color:var(--text);}
+.user-pill span{font-size:.72rem;color:var(--text3);font-family:'Space Mono',monospace;}
+
+.timer{
+  background:var(--dark);color:white;
+  padding:9px 16px;border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:1.05rem;font-weight:700;
+  letter-spacing:2px;transition:background .3s;
+  min-width:110px;text-align:center;
+}
+.timer.warn{background:var(--amber);animation:glow 1.5s infinite;}
+.timer.danger{background:var(--red);animation:pulse .8s infinite;}
+
+.tabs-row{
+  background:white;border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;flex-shrink:0;
+  scrollbar-width:none;
+}
+.tabs-row::-webkit-scrollbar{display:none;}
+.tab{
+  padding:12px 20px;border:none;background:none;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:.82rem;font-weight:600;
+  color:var(--text3);border-bottom:3px solid transparent;
+  white-space:nowrap;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.tab.active{color:var(--g1);border-bottom-color:var(--g1);}
+.tab-prog{
+  font-size:.65rem;font-weight:500;
+  background:var(--surface3);border-radius:100px;
+  padding:1px 6px;transition:background .2s;
+}
+.tab.active .tab-prog{background:var(--g2);color:white;}
+
+.exam-scroll{flex:1;overflow-y:auto;padding:20px 16px;max-width:680px;margin:0 auto;width:100%;}
+
+/* Question card with slide animation */
+.q-wrap{animation:slideLeft .3s cubic-bezier(.22,1,.36,1);}
+.q-wrap.slide-right{animation:slideRight .3s cubic-bezier(.22,1,.36,1);}
+
+.q-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;
+}
+.q-num{font-size:.78rem;font-weight:700;color:var(--g1);font-family:'Space Mono',monospace;}
+.q-type-badge{
+  font-size:.68rem;font-weight:700;padding:3px 10px;
+  border-radius:100px;text-transform:uppercase;letter-spacing:.5px;
+}
+.badge-novel{background:#fff3cd;color:#856404;}
+.badge-english{background:#d1e7dd;color:#0f5132;}
+
+.q-card{
+  background:white;border-radius:16px;
+  padding:22px 20px;
+  box-shadow:0 2px 16px rgba(0,0,0,.07);
+  border:1px solid var(--border);
+}
+.q-text{
+  font-size:.98rem;line-height:1.65;font-weight:500;
+  color:var(--text);margin-bottom:18px;
+}
+
+.opts{display:flex;flex-direction:column;gap:9px;}
+.opt{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 16px;border:2px solid var(--border);
+  border-radius:10px;cursor:pointer;transition:all .18s;
+  background:white;position:relative;overflow:hidden;
+}
+.opt::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at var(--rx,50%) var(--ry,50%),rgba(0,166,81,.08),transparent 70%);
+  opacity:0;transition:opacity .25s;
+}
+.opt:hover::after{opacity:1;}
+.opt:hover{border-color:var(--g2);background:#f0faf5;transform:translateX(3px);}
+.opt.selected{
+  border-color:var(--g1);background:#e8f5ee;
+  transform:translateX(3px);
+}
+.opt.selected::after{opacity:1;}
+.opt-letter{
+  width:28px;height:28px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.78rem;flex-shrink:0;
+  transition:all .18s;font-family:'Space Grotesk',sans-serif;
+}
+.opt.selected .opt-letter{
+  background:var(--g1);border-color:var(--g1);color:white;
+  animation:tickIn .25s cubic-bezier(.22,1,.36,1);
+}
+.opt-text{font-size:.92rem;line-height:1.45;padding-top:4px;color:var(--text);}
+
+/* progress bar under q-card */
+.q-progress-bar{
+  height:3px;background:var(--border);
+  border-radius:100px;margin-top:14px;overflow:hidden;
+}
+.q-progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--g1),var(--g2));
+  border-radius:100px;transition:width .4s cubic-bezier(.22,1,.36,1);
+}
+
+/* nav row */
+.nav-row{
+  display:flex;gap:8px;padding:14px 16px;
+  background:white;border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.btn-nav{
+  flex:1;padding:12px 8px;border:2px solid var(--border);
+  border-radius:10px;background:white;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;
+  color:var(--text2);transition:all .2s;
+}
+.btn-nav:hover:not(:disabled){border-color:var(--g1);color:var(--g1);background:#f0faf5;}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-submit{
+  padding:12px 20px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#c0392b,#e74c3c);
+  color:white;cursor:pointer;font-family:'Space Grotesk',sans-serif;
+  font-size:.88rem;font-weight:700;transition:all .2s;white-space:nowrap;
+  box-shadow:0 2px 12px rgba(192,57,43,.3);
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(192,57,43,.4);}
+
+/* ── RESULTS PAGE ── */
+#page-results{background:var(--dark);overflow-y:auto;flex-direction:column;}
+
+.result-hero{
+  background:linear-gradient(160deg,var(--dark),#071a2b,#082014);
+  padding:32px 20px;text-align:center;
+  border-bottom:1px solid rgba(0,166,81,.2);
+  position:relative;overflow:hidden;
+}
+.result-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(0,166,81,.15),transparent 60%);
+}
+.result-user{
+  font-size:.82rem;color:rgba(255,255,255,.5);
+  margin-bottom:20px;animation:fadeUp .4s both;
+  position:relative;
+}
+.score-ring{
+  width:150px;height:150px;border-radius:50%;
+  border:4px solid rgba(245,166,35,.4);
+  background:radial-gradient(circle,rgba(0,166,81,.1),transparent);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  animation:scaleIn .5s .1s both;
+  position:relative;z-index:1;
+  box-shadow:0 0 40px rgba(0,166,81,.2),inset 0 0 20px rgba(0,0,0,.1);
+}
+.score-big{
+  font-size:2.8rem;font-weight:800;color:white;
+  font-family:'Space Mono',monospace;
+  animation:countUp .4s .3s both;
+}
+.score-denom{font-size:.75rem;color:rgba(255,255,255,.45);}
+.grade-text{
+  font-size:1rem;font-weight:700;color:var(--gold);
+  animation:fadeUp .4s .4s both;position:relative;
+}
+
+.result-body{padding:20px;max-width:680px;margin:0 auto;width:100%;}
+
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin-bottom:24px;
+}
+.stat-box{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:16px 10px;text-align:center;
+  animation:fadeUp .4s both;
+}
+.stat-box:nth-child(2){animation-delay:.06s;}
+.stat-box:nth-child(3){animation-delay:.12s;}
+.stat-val{
+  font-size:1.7rem;font-weight:800;font-family:'Space Mono',monospace;
+  animation:countUp .4s .3s both;
+}
+.stat-box.c .stat-val{color:#4ade80;}
+.stat-box.w .stat-val{color:#f87171;}
+.stat-box.s .stat-val{color:#fbbf24;}
+.stat-lbl{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:3px;}
+
+.corrections{margin-top:8px;}
+.subj-block{margin-bottom:20px;animation:fadeUp .4s both;}
+.subj-head{
+  font-size:.85rem;font-weight:700;color:white;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:10px 16px;border-radius:10px;
+  margin-bottom:10px;font-family:'Space Grotesk',sans-serif;
+}
+
+.corr-item{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:14px;margin-bottom:8px;
+  border-left:3px solid var(--red);
+  animation:fadeIn .3s both;
+}
+.corr-q{font-size:.85rem;font-weight:500;color:rgba(255,255,255,.8);margin-bottom:8px;line-height:1.45;}
+.corr-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{padding:3px 10px;border-radius:6px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.tag-c{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.tag-w{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.2);}
+
+.btn-retake{
+  display:block;width:100%;padding:16px;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;border:none;border-radius:12px;
+  font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;
+  cursor:pointer;margin:24px 0 8px;
+  box-shadow:0 4px 20px rgba(0,104,55,.35);
+  transition:all .25s;
+}
+.btn-retake:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,104,55,.45);}
+
+/* ── FOOTER ── */
+.footer{
+  background:rgba(0,0,0,.4);text-align:center;
+  padding:12px;font-size:.72rem;color:rgba(255,255,255,.3);
+  flex-shrink:0;border-top:1px solid rgba(255,255,255,.06);
+}
+.footer a{color:var(--gold);text-decoration:none;}
+
+/* ── MODAL ── */
+.modal-bg{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  z-index:200;align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.open{display:flex;animation:fadeIn .2s;}
+.modal-box{
+  background:white;border-radius:20px;
+  padding:32px 28px;max-width:420px;width:100%;
+  text-align:center;
+  animation:scaleIn .3s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 24px 80px rgba(0,0,0,.4);
+}
+.modal-icon{font-size:2.5rem;margin-bottom:12px;}
+.modal-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;font-family:'Space Grotesk',sans-serif;}
+.modal-box p{font-size:.88rem;color:#6c757d;margin-bottom:24px;line-height:1.5;}
+.modal-btns{display:flex;gap:10px;}
+.btn-cancel{
+  flex:1;padding:12px;border:2px solid #dee2e6;
+  border-radius:10px;background:white;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;
+  color:#495057;transition:all .2s;
+}
+.btn-cancel:hover{border-color:#adb5bd;background:#f8f9fa;}
+.btn-confirm{
+  flex:1;padding:12px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#c0392b,#e74c3c);
+  color:white;cursor:pointer;font-family:'Space Grotesk',sans-serif;
+  font-size:.9rem;font-weight:700;transition:all .2s;
+}
+.btn-confirm:hover{transform:translateY(-1px);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:480px){
+  .hero-title{font-size:1.7rem;}
+  .subjects-grid{grid-template-columns:1fr;}
+  .info-strip{gap:8px;}
+  .stats-row{gap:8px;}
+  .glass-card{padding:24px 18px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- ══════════ PAGE 1: WELCOME ══════════ -->
+<div class="page active" id="page-welcome">
+  <div class="top-bar">
+    <div class="logo-ring">J</div>
+    <div class="top-bar-text">
+      <h1>Joint Admissions &amp; Matriculation Board</h1>
+      <p>UTME Mock CBT Examination 2026/2027</p>
+    </div>
+  </div>
+
+  <div class="welcome-hero">
+    <div class="hero-badge"><span></span> 2026 / 2027 UTME Season</div>
+    <h1 class="hero-title">JAMB Mock<br><span>CBT Portal</span></h1>
+    <p class="hero-sub">Prepare and practise with real JAMB-style questions. Simulate the full exam experience before the D-day.</p>
+
+    <div class="glass-card">
+      <div class="field-wrap">
+        <label class="field-label">Full Name</label>
+        <input class="field-input" id="inp-name" type="text" placeholder="e.g. Adaobi Chukwu" autocomplete="off"/>
+        <div class="field-error" id="err-name">Please enter your full name.</div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">JAMB Registration Number</label>
+        <input class="field-input" id="inp-reg" type="text" placeholder="e.g. AB1234567EF" autocomplete="off" style="font-family:'Space Mono',monospace;letter-spacing:1px;"/>
+        <div class="field-error" id="err-reg">INVALID — Registration number must contain at least 2 letters.</div>
+      </div>
+      <button class="btn-primary" onclick="goToInstructions()" id="btn-proceed">
+        Proceed to Exam &rarr;
+      </button>
+    </div>
+  </div>
+  <div class="footer">Made with ❤️ by Victor &nbsp;—&nbsp; Contact @ <a href="tel:09168960668">09168960668</a></div>
+</div>
+
+<!-- ══════════ PAGE 2: INSTRUCTIONS ══════════ -->
+<div class="page" id="page-instructions">
+  <div class="top-bar">
+    <div class="logo-ring">J</div>
+    <div class="top-bar-text">
+      <h1>Exam Information &amp; Subject Selection</h1>
+      <p>UTME Mock CBT 2026/2027</p>
+    </div>
+  </div>
+
+  <div class="inst-body">
+    <div class="info-strip">
+      <div class="info-chip"><div class="val">2hrs</div><div class="lbl">Duration</div></div>
+      <div class="info-chip"><div class="val">180</div><div class="lbl">Questions</div></div>
+      <div class="info-chip"><div class="val">400</div><div class="lbl">Total Marks</div></div>
+    </div>
+    <div class="notice-strip">
+      📚 <b>Structure:</b> English Language (60 qs) + 3 subjects of your choice (40 qs each). English includes 50 general questions + 10 from <em>The Lekki Headmaster</em>.
+    </div>
+    <div class="sec-label">Select Your Subjects</div>
+    <div class="sel-info" id="sel-info">Choose 3 more subjects (0/3 selected)</div>
+    <div class="subjects-grid">
+      <div class="subj-card locked" data-s="English">
+        <div class="subj-icon">📖</div>
+        <div class="subj-name">English Language</div>
+        <div class="subj-check">✓</div>
+      </div>
+      <div class="subj-card" data-s="Mathematics" onclick="toggleSubj(this)">
+        <div class="subj-icon">📐</div><div class="subj-name">Mathematics</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="Economics" onclick="toggleSubj(this)">
+        <div class="subj-icon">💹</div><div class="subj-name">Economics</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="Literature" onclick="toggleSubj(this)">
+        <div class="subj-icon">📚</div><div class="subj-name">Literature in English</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="Chemistry" onclick="toggleSubj(this)">
+        <div class="subj-icon">⚗️</div><div class="subj-name">Chemistry</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="Physics" onclick="toggleSubj(this)">
+        <div class="subj-icon">⚛️</div><div class="subj-name">Physics</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="Biology" onclick="toggleSubj(this)">
+        <div class="subj-icon">🧬</div><div class="subj-name">Biology</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="Government" onclick="toggleSubj(this)">
+        <div class="subj-icon">⚖️</div><div class="subj-name">Government</div><div class="subj-check"></div>
+      </div>
+      <div class="subj-card" data-s="CRS" onclick="toggleSubj(this)">
+        <div class="subj-icon">✝️</div><div class="subj-name">Christian Religious Studies</div><div class="subj-check"></div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn-start" style="display:none;" onclick="startExam()">▶ &nbsp;START EXAM NOW</button>
+  </div>
+  <div class="footer">Made with ❤️ by Victor &nbsp;—&nbsp; Contact @ <a href="tel:09168960668">09168960668</a></div>
+</div>
+
+<!-- ══════════ PAGE 3: EXAM ══════════ -->
+<div class="page" id="page-exam">
+  <div class="exam-topbar">
+    <div class="user-pill">
+      <strong id="exam-name">—</strong>
+      <span id="exam-reg">—</span>
+    </div>
+    <div class="timer" id="timer">02:00:00</div>
+  </div>
+  <div class="tabs-row" id="tabs-row"></div>
+  <div class="exam-scroll" id="exam-scroll">
+    <div id="q-mount"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-nav" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+    <button class="btn-nav" id="btn-skip" onclick="skipQ()">Skip</button>
+    <button class="btn-nav" id="btn-next" onclick="navigate(1)">Next →</button>
+    <button class="btn-submit" onclick="openSubmitModal()">Submit</button>
+  </div>
+  <div class="footer">Made with ❤️ by Victor &nbsp;—&nbsp; Contact @ <a href="tel:09168960668">09168960668</a></div>
+</div>
+
+<!-- ══════════ PAGE 4: RESULTS ══════════ -->
+<div class="page" id="page-results">
+  <div class="top-bar">
+    <div class="logo-ring">J</div>
+    <div class="top-bar-text">
+      <h1>Examination Results</h1>
+      <p>UTME Mock CBT 2026/2027</p>
+    </div>
+  </div>
+  <div class="result-hero">
+    <div class="result-user" id="res-user">—</div>
+    <div class="score-ring">
+      <div class="score-big" id="res-score">0</div>
+      <div class="score-denom">/ 400</div>
+    </div>
+    <div class="grade-text" id="res-grade"></div>
+  </div>
+  <div class="result-body">
+    <div class="stats-row">
+      <div class="stat-box c"><div class="stat-val" id="st-c">0</div><div class="stat-lbl">Correct</div></div>
+      <div class="stat-box w"><div class="stat-val" id="st-w">0</div><div class="stat-lbl">Wrong</div></div>
+      <div class="stat-box s"><div class="stat-val" id="st-s">0</div><div class="stat-lbl">Skipped</div></div>
+    </div>
+    <div class="corrections" id="corrections"></div>
+    <button class="btn-retake" onclick="retake()">🔄 &nbsp;Retake Exam</button>
+  </div>
+  <div class="footer">Made with ❤️ by Victor &nbsp;—&nbsp; Contact @ <a href="tel:09168960668">09168960668</a></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-icon">📋</div>
+    <h3>Submit Examination?</h3>
+    <p id="modal-msg">You still have unanswered questions. Submit anyway?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-confirm" onclick="submitExam()">Yes, Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   BACKGROUND CANVAS PARTICLES
+══════════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('bg-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  function rand(a,b){return a+Math.random()*(b-a);}
+  for(let i=0;i<55;i++){
+    pts.push({x:rand(0,W),y:rand(0,H),r:rand(.5,2.5),
+      vx:rand(-.3,.3),vy:rand(-.3,.3),
+      op:rand(.1,.5),col:Math.random()>.7?'245,166,35':'0,166,81'});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.col},${p.op})`;
+      ctx.fill();
+    });
+    // draw connecting lines
+    pts.forEach((a,i)=>{
+      pts.slice(i+1).forEach(b=>{
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<90){
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=`rgba(0,166,81,${.12*(1-d/90)})`;
+          ctx.lineWidth=.5;ctx.stroke();
+        }
+      });
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ══════════════════════════════════════════
+   RIPPLE EFFECT ON BUTTONS
+══════════════════════════════════════════ */
+document.querySelectorAll('.btn-primary').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const r=document.createElement('span');
+    r.className='ripple-el';
+    const rect=this.getBoundingClientRect();
+    const size=Math.max(rect.width,rect.height)*2;
+    r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    this.appendChild(r);
+    setTimeout(()=>r.remove(),700);
+  });
+});
+
+/* ══════════════════════════════════════════
+   QUESTION BANK
+══════════════════════════════════════════ */
+const QB = {
+
+  /* --- ENGLISH GENERAL (50 questions) --- */
+  EnglishGeneral: [
+    {q:"The manager's decision was arbitrary. Choose nearest meaning.",opts:["balanced","reasonable","based on chance","final"],ans:2},
+    {q:"The student's excuse for being late was lame. Choose nearest meaning.",opts:["difficult","unconvincing","colorful","professional"],ans:1},
+    {q:"The witness gave a lucid account of the accident. Choose nearest meaning.",opts:["vague","clear","noisy","false"],ans:1},
+    {q:"He is a veritable genius in mathematics. Choose nearest meaning.",opts:["supposed","true","fake","failing"],ans:1},
+    {q:"The governor's speech was curtailed due to the rain. Choose nearest meaning.",opts:["lengthened","shortened","cancelled","improved"],ans:1},
+    {q:"The soldier was rewarded for his valour. Choose the ANTONYM.",opts:["honesty","cowardice","speed","intelligence"],ans:1},
+    {q:"The climate of the region is very humid. Choose the ANTONYM.",opts:["cold","dry","wet","windy"],ans:1},
+    {q:"The company is currently solvent. Choose the ANTONYM.",opts:["broke","wealthy","growing","famous"],ans:0},
+    {q:"She gave a voluntary statement to the police. Choose the ANTONYM.",opts:["willing","true","compulsory","long"],ans:2},
+    {q:"The twins are very dissimilar in character. Choose the ANTONYM.",opts:["alike","different","rude","quiet"],ans:0},
+    {q:"Neither the principal nor the teachers _______ present at the meeting.",opts:["is","was","were","has been"],ans:2},
+    {q:"I would have helped him if he _______ me.",opts:["asks","asked","had asked","has asked"],ans:2},
+    {q:"The man is too stingy to part _______ his money.",opts:["with","from","by","of"],ans:0},
+    {q:"You must apologize _______ the teacher for your behavior.",opts:["with","to","at","for"],ans:1},
+    {q:"It is high time we _______ for the examination.",opts:["start","starting","started","have started"],ans:2},
+    {q:"One of the boys _______ lost his textbook.",opts:["have","having","has","were"],ans:2},
+    {q:"He has been living here _______ 2010.",opts:["for","since","during","about"],ans:1},
+    {q:"The plane took _______ at exactly 10:00 AM.",opts:["out","off","up","away"],ans:1},
+    {q:"Between you and _______, I don't think he will pass.",opts:["I","me","myself","mine"],ans:1},
+    {q:"I prefer swimming _______ running.",opts:["than","over","to","more than"],ans:2},
+    {q:"'Chidi's promotion is in the offing' means:",opts:["It has already happened","It will never happen","It is about to happen","It has been cancelled"],ans:2},
+    {q:"'The workers are at loggerheads with the management' means:",opts:["They are friends","They are in strong disagreement","They are planning a party","They are working together"],ans:1},
+    {q:"'He hit the nail on the head' means:",opts:["He hurt himself","He was very accurate","He made a mistake","He was building a chair"],ans:1},
+    {q:"'Aduke is the apple of her father's eye' means:",opts:["She is a farmer","She is very dear to him","She looks like an apple","He is angry with her"],ans:1},
+    {q:"'The news took us by storm' means:",opts:["There was a rainy day","It was expected","It was a complete surprise","It was bad news"],ans:2},
+    {q:"Which word has the same vowel sound as 'court'?",opts:["port","count","out","aunt"],ans:0},
+    {q:"Which word has the same vowel sound as 'feet'?",opts:["fit","sit","beat","pet"],ans:2},
+    {q:"Which word has the same vowel sound as 'park'?",opts:["back","farm","bat","pat"],ans:1},
+    {q:"Which word has the same vowel sound as 'boot'?",opts:["foot","look","blue","blood"],ans:2},
+    {q:"Which word has the same vowel sound as 'but'?",opts:["put","son","pull","full"],ans:1},
+    {q:"Which word has the same consonant sound as 'vine'?",opts:["fine","wine","fan","van"],ans:3},
+    {q:"Which word has the same consonant sound as 'think'?",opts:["then","thank","that","these"],ans:1},
+    {q:"Which word has the same consonant sound as 'church'?",opts:["ship","cheap","cash","feature"],ans:1},
+    {q:"Which word has the same consonant sound as 'sing'?",opts:["sin","sun","bank","nose"],ans:2},
+    {q:"Which word has the same consonant sound as 'pleasure'?",opts:["measure","pressure","cease","price"],ans:0},
+    {q:"Identify the misspelt word:",opts:["Occurrence","Maintenance","Accomodation","Professional"],ans:2},
+    {q:"The jury _______ reached a verdict.",opts:["has","have","were","are"],ans:0},
+    {q:"He is the _______ of the two brothers.",opts:["tallest","taller","more tall","most tall"],ans:1},
+    {q:"Which of these is a command?",opts:["He is coming.","Will you come?","Come here!","If he comes."],ans:2},
+    {q:"'I am busy,' said John. Change to indirect speech.",opts:["John said he was busy.","John says he is busy.","John said I am busy.","John told he was busy."],ans:0},
+    {q:"Most of his personal _______ stolen.",opts:["effects were","affects was","effects was","defects"],ans:0},
+    {q:"Bola takes _______ his father in appearance and manner.",opts:["on","from","after","upon"],ans:2},
+    {q:"_______ rich has its own problem.",opts:["Being","Been","On being","On been"],ans:0},
+    {q:"With strong determination, Adamu was able to _______ the problem.",opts:["surmount","surpass","defend","know"],ans:0},
+    {q:"He decided to wait for the bus because he had _______.",opts:["many luggages","plenty luggages","a lot of luggage","too many luggage"],ans:2},
+    {q:"More lawyers enrolled at the Bar last year _______ this year.",opts:["very many/than","same/as","More/than","As/much"],ans:2},
+    {q:"The officer _______ that he was not supposed to talk to the press.",opts:["could have known","shall know","should have known","will know"],ans:2},
+    {q:"He said, 'We shouldn't do it _______?'",opts:["should we","should be","didn't we","said he"],ans:0},
+    {q:"After too much exercise, cramp is caused by the _______ of muscles.",opts:["contraction","restriction","conscription","relaxation"],ans:0},
+    {q:"When you _______ an opponent's point in a debate, you must do so politely.",opts:["refute","rebuke","reject","refuse"],ans:0},
+  ],
+
+  /* --- LEKKI HEADMASTER (10 questions, randomly drawn from pool) --- */
+  LekkiHeadmaster: [
+    {q:"[Lekki Headmaster] In his discussions with the school management, what structured plan did Bepo successfully promote regarding student excursions?",opts:["One excursion per term within Nigeria and an annual international trip","Monthly parent-teacher meetings","Daily academic competitions","Weekly sporting activities"],ans:0},
+    {q:"[Lekki Headmaster] Why did Bepo emphasize that students, especially from elite families, should explore Nigeria before going abroad?",opts:["To reduce school expenses","To ensure they become tourists","To help them develop lasting familiarity with their country","To discourage overseas travel"],ans:2},
+    {q:"[Lekki Headmaster] During visits to places like Ikogosi Warm Springs and Owu Waterfalls, what educational aim guided Bepo?",opts:["Teaching them foreign history","Preparing them for examinations","Training them for tourism careers","Helping them understand Nigeria's natural and tourist features"],ans:3},
+    {q:"[Lekki Headmaster] What does Bepo's personal research into numerous waterfalls across Nigeria reveal?",opts:["He preferred travelling without students","He was committed to expanding students' national exposure","He doubted the relevance of excursions","He focused only on classroom teaching"],ans:1},
+    {q:"[Lekki Headmaster] Why did Bepo feel disappointed after the students' visit to Ikogosi Warm Springs?",opts:["The journey cost too much","The management objected","The students complained","The students lacked time to visit the nearby Arinta Waterfalls"],ans:3},
+    {q:"[Lekki Headmaster] What idea did Bepo stress using the proverb 'ilé la tii késpo rode' during Lagos cultural visits?",opts:["Tourism is only for entertainment","Learning begins from one's immediate environment","Foreign culture is more valuable","Only urban centres matter"],ans:1},
+    {q:"[Lekki Headmaster] Why did Bepo deliberately include visits to both Banana Island and Ajegunle in the excursion plan?",opts:["To prepare them for migration","To conduct academic research","To compare architectural styles","To illustrate social contrasts and possibilities in life"],ans:3},
+    {q:"[Lekki Headmaster] During the visit to Ajegunle, what central lesson did Bepo communicate about personal growth?",opts:["Wealth alone guarantees success","Connections determine future","Slum conditions define destiny","Education and determination can change one's life"],ans:3},
+    {q:"[Lekki Headmaster] How do visits to Yaba Psychiatric Hospital and OYASAF Foundation demonstrate Bepo's approach?",opts:["Focus on leisure activities","Avoidance of serious societal issues","Limiting learning to textbooks","Combining academic learning with real-life exposure"],ans:3},
+    {q:"[Lekki Headmaster] What overall principle best captures Bepo's advocacy for excursions and national exposure?",opts:["Education should depend only on books","Foreign exposure is more important","Direct experience enhances learning and national awareness","Excursions are unnecessary in schooling"],ans:2},
+    {q:"[Lekki Headmaster] Who is the Principal of Stardom Schools?",opts:["Mr. Jeremi Amos","Mrs. Apeh","Bepo (Adewale Adebepo)","Mr. Audu"],ans:2},
+    {q:"[Lekki Headmaster] Who is the Managing Director of Stardom Schools?",opts:["Mrs. Grace Apeh","Mrs. Ibidun Gloss","Mrs. Mary Ladele","Tai"],ans:1},
+    {q:"[Lekki Headmaster] Who was Bepo's mentor and founder of Stardom Schools?",opts:["Mr. Ibe","Mr. Guta","Chief David Aje","Mr. Amos"],ans:2},
+    {q:"[Lekki Headmaster] Who is the English teacher criticized over grammar?",opts:["Mr. Fafore","Mr. Audu","Mr. Ayesoro","Mr. Ibe"],ans:0},
+    {q:"[Lekki Headmaster] Who is the Games Master and novelty match referee?",opts:["Mr. Amos","Mr. Ibe","Mr. Audu","Mr. Ayesoro"],ans:2},
+    {q:"[Lekki Headmaster] Why was Bepo planning to leave Nigeria?",opts:["He got sacked","He wanted a vacation","He wanted to join his wife and kids in the UK","He was offered a scholarship"],ans:2},
+    {q:"[Lekki Headmaster] What suspicious item did Mrs. Gloss find at the school's property?",opts:["Weapons","Cars with school stickers","Damaged furniture","Hidden cash"],ans:1},
+    {q:"[Lekki Headmaster] What was the grammatical phrase in dispute between Mr. Fafore and a parent?",opts:["'They is going'","'Comes vs. come' with 'as well as'","'She do go'","'Were is the book'"],ans:1},
+    {q:"[Lekki Headmaster] Why did Bepo leave Beesway Group of Schools?",opts:["Low salary","Poor leadership","Strange ritual involving a cow","Overload of work"],ans:2},
+    {q:"[Lekki Headmaster] What innovative club project did Bepo support?",opts:["Coding Club","Science Fair","The Breath Project (phone from recycled parts)","Debate Club"],ans:2},
+    {q:"[Lekki Headmaster] Which city is known for its slave trade history and was visited by Stardom students?",opts:["Ibadan","Badagry","Lagos Island","Enugu"],ans:1},
+    {q:"[Lekki Headmaster] What reflection did Bepo have about migration during the Badagry trip?",opts:["Nigerians are lucky to leave","Migration is always the answer","Modern migration is like new-age slavery","Everyone should leave Nigeria"],ans:2},
+    {q:"[Lekki Headmaster] Who helped facilitate the passport process for Bepo?",opts:["Mr. Amos","Tai","Sola","Mr. Egi Meko"],ans:1},
+    {q:"[Lekki Headmaster] What did Bepo receive as a farewell gift?",opts:["Plane ticket","Car","₦1 million","$10,000 cheque"],ans:2},
+    {q:"[Lekki Headmaster] How did the students respond to Bepo's departure?",opts:["They cried silently","They replaced him immediately","They stormed the gate chanting his name","They went on strike"],ans:2},
+    {q:"[Lekki Headmaster] What haunted Bepo in his dream on the plane?",opts:["Students crying","A slavery scene at the museum","His family leaving him","A failed school inspection"],ans:1},
+    {q:"[Lekki Headmaster] Who organized the novelty match and farewell events?",opts:["Mr. Amos","Mr. Ibe","The school staff and students","The Invention Club"],ans:2},
+    {q:"[Lekki Headmaster] What was Bepo's final realization as he left?",opts:["He would never return","His mission was unfulfilled","His legacy would live on","He failed his students"],ans:2},
+    {q:"[Lekki Headmaster] What major issue delayed passport issuance?",opts:["Typographical error","Missing booklets and bribes","Wrong NIN","Incomplete form"],ans:1},
+    {q:"[Lekki Headmaster] Why did the Ignatius family's visa get denied?",opts:["Criminal record","False documents","DNA test revealed infidelity","No sponsor"],ans:2},
+  ],
+
+  Mathematics: [
+    {q:"Solve the simultaneous equations: x/2 − y/5 = 1 and y − x/3 = 8. What are the values of x and y?",opts:["x=10, y=−6","x=10, y=6","x=6, y=10","x=−10, y=6"],ans:1},
+    {q:"Given the matrix M = [[1,2],[3,5]], calculate the sum of all elements in the inverse of M.",opts:["1","−1","2","0.5"],ans:0},
+    {q:"The area of a sector is given by A = θ/360 × πr². Make θ the subject of the formula.",opts:["θ = 360/πA","θ = 360A/πθ","θ = 360A/πr²","θ = 360r²/πA"],ans:2},
+    {q:"What is the probability of obtaining an even number when a fair six-sided die is thrown once?",opts:["1/4","1/5","1/2","1/3"],ans:2},
+    {q:"Find the integral of y = 4x³ + 2x + cos x with respect to x.",opts:["x⁴ − x² − sin x + C","x⁴ + x² + sin x + C","x⁴ − x² + sin x + C","x⁴ + x² − sin x + C"],ans:1},
+    {q:"An amount of ₦600,000 was obtained after investing a principal at 5% simple interest for 4 years. What was the original principal invested?",opts:["₦570,000","₦500,000","₦300,000","₦400,000"],ans:1},
+    {q:"A number of pencils were shared among Bisi, Sola and Tunde in the ratio 2:3:5 respectively. If Bisi received 5 pencils, how many pencils were shared out altogether?",opts:["15","25","30","50"],ans:1},
+    {q:"In how many ways can 2 students be selected from a group of 5 students to represent their class in a debate competition?",opts:["10 ways","15 ways","20 ways","25 ways"],ans:0},
+    {q:"What is the minimum value of the function y = 2 − 4x − 2x²?",opts:["4","5","3","2"],ans:0},
+    {q:"The second term and fifth term of a geometric progression are 1 and 1/8 respectively. What is the common ratio of the progression?",opts:["1/4","1/5","1/2","1/3"],ans:2},
+    {q:"Find all values of x that satisfy the inequality x² + 3x − 4 ≤ 0.",opts:["−4 ≥ x ≥ 1","4 ≤ x ≤ −1","4 ≥ x ≥ 1","−4 ≤ x ≤ 1"],ans:3},
+    {q:"What are the coordinates of the midpoint of the line segment joining P(−3, 4) and Q(5, 6)?",opts:["(1, 5)","(4, 1)","(5, 1)","(1, 4)"],ans:0},
+    {q:"A car dealer bought a used car for ₦270,000 and spent ₦70,000 on repairs. He later sold it for ₦490,000. What is his percentage profit?",opts:["30%","35%","25%","45%"],ans:0},
+    {q:"Given that √75 − √12 + √27 = y√3, what is the value of y?",opts:["4","5","3","6"],ans:1},
+    {q:"What is the size of each interior angle of a regular polygon with 5 sides?",opts:["120°","90°","108°","180°"],ans:2},
+    {q:"In how many different ways can the letters of the word HANDIER be arranged?",opts:["3,080","2,650","4,050","5,040"],ans:3},
+    {q:"A banker spent 1/5 of his salary on shirts and then spent 1/3 of the remainder on transport. What fraction of his salary was left?",opts:["6/15","8/15","7/15","4/5"],ans:1},
+    {q:"Solve the inequality 2x + 3 > 5x + 8 and find the range of x.",opts:["x > 5/3","x > −5/3","x < −5/3","x < 5/3"],ans:2},
+    {q:"Given that cos A = 12/13 and 0° ≤ A ≤ 90°, find the value of tan A.",opts:["5/12","12/13","5/13","13/12"],ans:0},
+    {q:"Simplify the expression −log₁₀ 0.00001.",opts:["−5","−4","5","4"],ans:2},
+    {q:"The mean weight of 15 iron bars is 1000 kg. When the heaviest bar is removed, the mean becomes 995 kg. What is the weight of the heaviest bar?",opts:["1,170 kg","1,270 kg","1,070 kg","1,370 kg"],ans:2},
+    {q:"Find the derivative of y = sin 4x with respect to x.",opts:["−4sin x","−4cos x","4sin 4x","4cos 4x"],ans:3},
+    {q:"A quantity A varies directly as the square of b. Given that A = 4 when b = 1, find the value of A when b = 2.",opts:["12","14","16","11"],ans:2},
+    {q:"The ages of Tosan and Isa differ by 6 years and the product of their ages is 187. Write their ages in the form (x, y) where x > y.",opts:["(12, 9)","(23, 17)","(17, 11)","(18, 12)"],ans:2},
+    {q:"Find the median of the following set of numbers: 89, 141, 130, 161, 120, 131, 131, 100, 108, 119.",opts:["131","125","123","120"],ans:1},
+    {q:"Find the probability that a number selected at random from 40 to 50 is a prime number.",opts:["3/11","5/11","3/10","4/11"],ans:0},
+    {q:"A basket contains 6 grapes, 11 bananas, and 13 oranges. If one fruit is picked at random, what is the probability that it is either a grape or a banana?",opts:["17/30","11/30","6/30","5/30"],ans:0},
+    {q:"How many distinct permutations can be made from the letters of the word SCHOOL?",opts:["600","360","480","300"],ans:1},
+    {q:"Find the value of t that satisfies the equation (1/2)^(t−1) = 64.",opts:["−6","−5","−7","−4"],ans:0},
+    {q:"A binary operation * is defined on the set X = {1,2,3,4,5,6} by a * b = ab + a + b. What is the value of 1 * 3?",opts:["14","4","7","5"],ans:2},
+    {q:"A quantity P consists of a constant part and a part that varies directly with Q. If P = 32 when Q = 16 and P = 20 when Q = 12, find the value of P when Q = 28.",opts:["68","64","66","62"],ans:1},
+    {q:"Using a frequency distribution table where the class 30–39 has the highest frequency of 12, estimate the mode of the distribution.",opts:["37.8","38.5","29.5","34.5"],ans:0},
+    {q:"Y is partly constant and partly varies directly with x. When x = 3, y = 7, and when x = 5, y = 11. Find the constants of variation.",opts:["2 and 3","1 and 2","3 and 2","3 and 4"],ans:1},
+    {q:"Find the equation of the straight line that passes through the point (3, 15) with a slope of 16/5.",opts:["5y + 16x + 27 = 0","5y − 16x + 27 = 0","5y − 16x − 27 = 0","5y + 16x − 27 = 0"],ans:2},
+    {q:"The average of the four numbers 0, x+2, 3x+6, and 4x+8 is 4. Find the value of x.",opts:["2/5","2/9","0","4"],ans:0},
+    {q:"In a frequency distribution, the upper class boundary of the modal class (21–30) with the highest frequency is what value?",opts:["21.5","30.5","20.5","10.5"],ans:1},
+    {q:"Find the limit of the function (x³ − 2x² + 6x − 12) / (x − 2) as x approaches 2.",opts:["Infinity","10","0","12"],ans:1},
+    {q:"Which of the following sets is equivalent to the set {1, 2, 3, 4, 5}?",opts:["{2,3,1,4}","{1,2,3,4,5,5}","{1,2,3,4}","{4,3,1,5,2}"],ans:3},
+    {q:"Given the arithmetic sequence 3, 5, 7, 9, ..., find an expression for the (n − 2)th term.",opts:["2n − 1","2n + 1","2n + 3","2n − 3"],ans:2},
+    {q:"Udoh deposited ₦150,000 in a bank. At the end of 5 years, the simple interest on the principal was ₦55,000. At what annual rate was the interest paid?",opts:["11%","7⅓%","5%","3½%"],ans:1}
+  ],
+
+  Economics: [
+    {q:"Which of the following is the most effective way of controlling inflation in a mixed economy?",opts:["Increase productivity","Reduce income tax","Ration available output","Increase imports"],ans:0},
+    {q:"What is a major disadvantage of using the arithmetic mean as a measure of central tendency?",opts:["It is not useful for large data","It is not suitable for further statistical analysis","It is cumbersome to determine the actual value","It is heavily affected by extreme data values"],ans:3},
+    {q:"What does consumer surplus measure?",opts:["The benefits derived from consuming a cheap commodity","The excess of total expenditure over total utility","The difference between marginal utility and marginal cost","The excess of marginal utility over the price paid"],ans:3},
+    {q:"When the demand for one commodity directly excludes or reduces the demand for another, the demand is said to be what?",opts:["Complementary demand","Competitive demand","Composite demand","Derived demand"],ans:1},
+    {q:"If demand increases without any corresponding change in supply, what will happen to the equilibrium price and quantity?",opts:["They will remain unchanged","They will shift inward","They will fall","They will both rise"],ans:3},
+    {q:"At what point is the total output of a firm at its maximum level?",opts:["When Marginal Product (MP) = 0","When Marginal Product (MP) > 0","When Average Product (AP) = 0","When Average Product (AP) > 0"],ans:0},
+    {q:"What is the name of the reward or payment given to the owners of capital as a factor of production?",opts:["Interest","Rent","Risk premium","Insurance premium"],ans:0},
+    {q:"What is the term used to describe a deliberate reduction in the official value of a country's currency in relation to other currencies?",opts:["Deflation","Inflation","Devaluation","Revaluation"],ans:2},
+    {q:"In a capitalist (free market) economy, who owns and controls the factors of production?",opts:["The citizens generally","Private businessmen and investors","The government","Foreign investors"],ans:1},
+    {q:"What is one major advantage of the localisation (concentration) of industries in a particular area?",opts:["Development of related subsidiary firms","Creation of parallel or black markets","Development of urban slums","Attraction of foreign capital away from the area"],ans:0},
+    {q:"Why has ECOWAS been slow in fully achieving its economic objectives?",opts:["Due to the activities of multinational companies","Due to inadequate personnel at the secretariat","Due to political instability in member states","Due to inadequate international support"],ans:2},
+    {q:"What type of business organization is characterized by a partnership between the government and private investors?",opts:["Poor and rich individuals","Employers and workers","Government and private investors","Multinational corporations and individuals"],ans:2},
+    {q:"In which type of business organization are the owners of the business mostly also the customers?",opts:["Co-operative societies","Limited liability companies","Partnerships","Public corporations"],ans:0},
+    {q:"The formula: (Index of Export Prices ÷ Index of Import Prices) × 100 is used to measure what economic concept?",opts:["The volume of trade between countries","The direction of international trade","The commodity terms of trade","The volume of imports"],ans:2},
+    {q:"The theory of international trade is an application of which economic principle?",opts:["Industrial production","Mass production","Regional production","Comparative cost advantage"],ans:3},
+    {q:"For which primary purpose is a well-conducted national population census most important?",opts:["Economic planning","Providing economic opportunities in rural areas","Distributing educational materials in cities","Generating government revenue"],ans:0},
+    {q:"What is the term for the cost-saving advantages that a large firm is able to achieve internally on its own (not from external factors)?",opts:["Internal economies of scale","Diseconomies of large-scale production","External diseconomies of scale","External economies of scale"],ans:0},
+    {q:"At what output level does a pure monopolist achieve the optimum (profit-maximizing) level of production?",opts:["Where price (P) is at its highest","Where price (P) equals average cost (AC)","Where price (P) equals marginal cost (MC)","Where marginal revenue (MR) equals marginal cost (MC)"],ans:3},
+    {q:"ECOWAS (Economic Community of West African States) is an example of what type of economic arrangement?",opts:["Globalization","Regional marketing board","Economic integration","Economic union"],ans:2},
+    {q:"Net National Product (NNP) is calculated by deducting which item from Gross National Product (GNP)?",opts:["Net exports","Government subsidies","Taxes","Depreciation (capital consumption)"],ans:3},
+    {q:"Given that an economy has an MPC (Marginal Propensity to Consume) of 0.75 and investment spending changes by ₦2 million, what is the value of the multiplier?",opts:["8","4","3","2"],ans:1},
+    {q:"The minimum amount of funds that commercial banks are legally required to deposit with the central bank is determined by which instrument?",opts:["Liquidity ratio","Cash reserve ratio","Minimum lending rate","Aggregate credit ceiling"],ans:1},
+    {q:"An ad valorem tax is a tax that is imposed on what basis?",opts:["Special or luxury commodities only","Exported goods","Imported goods","The monetary value of a commodity"],ans:3},
+    {q:"What is the most effective strategy for achieving rapid and sustainable economic development in Nigeria?",opts:["Continuous dependence on oil revenue","Concentrating exclusively on agriculture","Developing the tourism industry","Diversifying the economy across multiple sectors"],ans:3},
+    {q:"Where are long-term funds for major investment projects primarily sourced from?",opts:["Money market","Commodity market","Foreign exchange market","Capital market"],ans:3},
+    {q:"The Malthusian population theory was primarily concerned with the relationship between which two factors?",opts:["The population growth rates of rich and poor nations","Population density and national income","Population growth rate and the availability of natural resources","The age distribution of a population"],ans:2},
+    {q:"In a village with an initial population of 50 people, 10 people immigrated into the village, 25 people died, and 5 people emigrated out. What is the total population of the village after these changes?",opts:["10","20","30","50"],ans:2},
+    {q:"According to Adam Smith, the 'invisible hand' of the market primarily promotes the interests of whom?",opts:["Individual consumers","Society as a whole","The government","Individual producers"],ans:1},
+    {q:"What happens when all factors of production are variable in the long run and a firm doubles all its inputs but the resulting output is less than doubled?",opts:["Diminishing returns to a factor","Constant returns to scale","Increasing returns to scale","Decreasing returns to scale"],ans:3},
+    {q:"The money market primarily provides business firms with the opportunity to do what?",opts:["Purchase consumer goods and services","Purchase capital equipment and machinery","Obtain short-term funds for operations","Obtain long-term funds for investment"],ans:2},
+    {q:"Which of the following is a fiscal policy instrument that can directly influence the pattern of demand in an economy?",opts:["Government spending","Interest rate","Income tax","Import tariff"],ans:2},
+    {q:"What is the immediate effect of fixing a price above the equilibrium market price?",opts:["Both demand and supply remain constant","There is an increase in quantity supplied (creating a surplus)","There is an increase in supply","There is a decrease in quantity supplied"],ans:1},
+    {q:"What is the most important function performed by the price system in a free market economy?",opts:["To ensure that producers' profits remain high","To guarantee full employment of all resources","To allocate scarce resources to their most productive uses","To protect the economic interests of the government"],ans:2},
+    {q:"What is the primary long-term goal or reason behind a nation's desire to achieve economic growth?",opts:["To control inflation","To reduce poverty","To redistribute income","To raise the standard of living of citizens"],ans:3},
+    {q:"Which strategy would be most directly effective for improving agricultural output and production in Nigeria?",opts:["Controlling the prices of agricultural products","Ensuring self-sufficiency in food production","Reducing the volume of agricultural exports","Establishing commodity marketing boards"],ans:1},
+    {q:"A change in the pump price of petrol in Nigeria has the most direct effect on which of the following?",opts:["The general prices of consumer goods","The prices of essential goods only","The cost of industrial raw materials","The cost of transportation"],ans:3},
+    {q:"What measure can a government take to prevent the external (exchange rate) value of its currency from falling?",opts:["Increase its spending using foreign reserves","Sell its own currency on the foreign exchange market","Reduce the prevailing interest rate","Buy its own currency using foreign exchange reserves"],ans:3},
+    {q:"Which of the following is one of the main functions of ECOWAS?",opts:["To provide funds for infrastructural development","To determine the prices of member nations' exports","To redistribute income among citizens of member states","To provide employment opportunities for citizens of member nations"],ans:3},
+    {q:"What is the name of the reward given for the use of machinery and capital equipment in the process of production?",opts:["Profit","Interest","Rent","Wage"],ans:1},
+    {q:"The minimum amount which banks are required to deposit with the central bank is determined by which policy instrument?",opts:["Liquidity ratio","Cash reserve ratio","Minimum lending rate","Aggregate credit ceiling"],ans:1}
+  ],
+
+  Literature: [
+    {q:"What is the term for a literary work in which the characters and events are used as symbols to represent deeper moral or political meanings?",opts:["Characterisation","Allegory","Metaphor","Parallelism"],ans:1},
+    {q:"In the context of a novel, what does the term 'characterisation' primarily refer to?",opts:["The writer's personal opinion of the characters","The methods by which characters are revealed to the reader","The characters themselves and how they behave","The readers' interpretation of the characters"],ans:1},
+    {q:"In literary works, verbal irony is a device in which the speaker does what?",opts:["Says the opposite of what they truly mean","Speaks or acts against the trend of coming events","Presents a situation that defies logical or rational resolution","Says exactly what they mean with no hidden meaning"],ans:0},
+    {q:"In theatre, what is the term for words spoken by a character that are meant to be heard by the audience but NOT by the other characters on stage?",opts:["Aside","Soliloquy","Acoustic","Tone"],ans:0},
+    {q:"Drama is most accurately defined as the representation of a complete series of actions by means of which of the following?",opts:["Movement and gesture intended for the screen and audience","Speech, movement, and gesture intended for the stage only","Speech, movement, and gesture intended for the stage, screen, and radio","Speech, gesture, and movement intended for the screen and radio only"],ans:2},
+    {q:"What is the technical term for a poet's use of regular, measured rhythm in a poem?",opts:["Allegory","Assonance","Metre","Onomatopoeia"],ans:2},
+    {q:"Which literary genre is defined as the representation that most directly imitates human actions and is performed before an audience?",opts:["Drama","Comedy","Prose","Poetry"],ans:0},
+    {q:"What is a fable?",opts:["A story in which allegations are made about real characters","A story in which animals or inanimate things are used as characters to teach a moral lesson","A story with a particularly important setting","A story told entirely in poetic form"],ans:1},
+    {q:"What is the literary term for the juxtaposition of two sharply contrasting ideas within a single line of poetry?",opts:["Euphemism","Synecdoche","Catharsis","Oxymoron"],ans:3},
+    {q:"What is the main purpose of caricature as a literary and artistic device?",opts:["To describe someone accurately","To expose hypocrisy","To emphasise a point","To ridicule or mock someone"],ans:3},
+    {q:"In Richard Wright's novel Native Son, what is the primary reason why Bigger kills Mary?",opts:["Fear","Envy","Hatred","Distrust"],ans:0},
+    {q:"How is Wole Soyinka's play The Lion and the Jewel best classified?",opts:["A comedy","A tragi-comedy","A farce","A melodrama"],ans:1},
+    {q:"In Maya Angelou's poem 'Caged Bird', the line 'But a caged bird stands on the grave of dreams' suggests what about the caged bird?",opts:["It will eventually die","It will be permanently frustrated and unable to fulfil its potential","It literally stands on a grave","It is free to walk around and realise its dreams"],ans:1},
+    {q:"In Wole Soyinka's The Lion and the Jewel, why does Lakunle refuse to pay the bride price for Sidi?",opts:["He considers it unholy","He considers it illegal","He considers it barbaric and uncivilised","He considers it childish"],ans:2},
+    {q:"In the extract 'The commission has the power to investigate, to conciliate, to hold hearings, to order reinstatement...', which rhetorical device is employed?",opts:["Irony","Personification","Hyperbole","Parallelism"],ans:3},
+    {q:"A long narrative poem that celebrates and recounts the heroic exploits of a legendary or historical figure is called what?",opts:["Panegyric","Lyric","Ballad","Epic"],ans:3},
+    {q:"In John Osborne's Look Back in Anger, who accommodated Alison and Jimmy during the first month of their marriage?",opts:["Hugh Tanner","Nigel","Cliff","Webster"],ans:0},
+    {q:"According to the excerpt about football and Marley's music, how is football described?",opts:["A game played only in Lagos slums","A game associated with Marley's music","A popular but cheap game","A truly universal game played everywhere"],ans:3},
+    {q:"What is the setting of Alex Agyei-Agyiri's novel Unexpected Joy at Dawn?",opts:["Nigeria and Ghana","Nigeria and Togo","Ghana and Niger","Nigeria and Benin"],ans:0},
+    {q:"In Buchi Emecheta's Second Class Citizen, what is the main source of Adah's deep disappointment after arriving in England?",opts:["The overwhelming freedom given to Black people","The warm reception given to Black people","The recognition given to Black people","The widespread discrimination against Black people"],ans:3},
+    {q:"What kind of society does George Orwell's novel Nineteen Eighty-Four primarily depict?",opts:["A society trapped in a useless past","A dystopian, totalitarian future society","An unstable and chaotic society","A peaceful and harmonious society"],ans:1},
+    {q:"In George Orwell's Nineteen Eighty-Four, what does Room 101 symbolise?",opts:["A place of rest and healing","A place of fun and entertainment","A place of humiliation","A place of ultimate torture and one's greatest fears"],ans:3},
+    {q:"In J.P Clark's play Wives Revolt, the central message regarding gender equality is that it is what?",opts:["Both undesirable and unattainable","Desirable but practically unattainable","Both attainable and desirable","Obnoxious but desirable"],ans:2},
+    {q:"In Shakespeare's Othello, what is the primary reason why Othello kills Desdemona?",opts:["He is consumed by jealousy","His racial identity has been insulted","He believes she is a witch","He believes she has become an idol"],ans:0},
+    {q:"In Shakespeare's Othello, why does Brabantio strongly oppose the relationship between Othello and Desdemona?",opts:["He prefers Iago as a son-in-law","Othello is a Moor (of African descent) and he is prejudiced","Roderigo had first wooed Desdemona","Desdemona is too young for marriage"],ans:1},
+    {q:"The lines from Mbure's poem 'To Bed-Bug' beginning 'I wonder how long, you awful parasites...' are an example of which poetic form?",opts:["Limerick","Lampoon","Light verse","Light opera"],ans:2},
+    {q:"What is the most dominant figure of speech used in the excerpt from Mbure's 'To Bed-Bug' poem?",opts:["Metaphor","Simile","Personification","Hyperbole"],ans:2},
+    {q:"In Shakespeare's Romeo and Juliet, who brings Romeo the news of Juliet's death while he is in Mantua?",opts:["Balthasar","Friar Lawrence","A young boy","Friar John"],ans:0},
+    {q:"In Shakespeare's Romeo and Juliet, how is the character of Mercutio best described?",opts:["Fraudulent and dishonest","Quarrelsome and hot-tempered","Gentle and calm","Kind-hearted and generous"],ans:1},
+    {q:"In the expression 'Rage is chief' from the poem Raider of the Treasure Trove, what poetic device is used?",opts:["Oxymoron","Simile","Metaphor","Hyperbole"],ans:2},
+    {q:"What is the literary term for brief but purposeful references within a text to a person, place, event, or another work of literature?",opts:["Referrals","Chiasmus","Metonymy","Allusions"],ans:3},
+    {q:"A structural arrangement of units of composition in which elements of equal importance are similarly placed is called what?",opts:["Repetition","Paradox","Refrain","Parallelism"],ans:3},
+    {q:"A story that contains elements with both literal and figurative (symbolic) meanings is best described as what?",opts:["An allegory","A novella","A fable","An epistle"],ans:0},
+    {q:"In J.P Clark's poem 'Casualties', the line 'The drum overwhelmed the guns...' makes use of which literary device?",opts:["Litotes","Symbolism","Onomatopoeia","Alliteration"],ans:1},
+    {q:"In John Osborne's Look Back in Anger, what is the main reason why Jimmy gets along so easily with Cliff?",opts:["They both belong to the working class","Alison speaks very highly of Cliff to Jimmy","The relatives of Jimmy's mother are wealthy","They both come from affluent backgrounds"],ans:0},
+    {q:"In Buchi Emecheta's Second Class Citizen, why is Adah so obsessed with the sleek, well-dressed woman she sees at the hospital?",opts:["The woman has a very devoted and loving husband","The woman has a high-paying professional job","The woman gives birth to twins","The woman lives in a grand mansion"],ans:2},
+    {q:"In Emily Brontë's Wuthering Heights, the structure of the novel is built around two major conflicts centred on which theme?",opts:["Love","Passion","Emotion","Romance"],ans:0},
+    {q:"In Shakespeare's Romeo and Juliet, at what point does the play reach its denouement (final resolution)?",opts:["At the Capulet family feast","When Romeo kills Paris at the tomb","At the reconciliation of the two feuding families","When Romeo first hears the false news of Juliet's death"],ans:2},
+    {q:"What is the rhyme scheme of the excerpt from Peter Abraham's poem 'Lonely Road' (Lonely road / Not a star / Lonely road / Shadows far / And quiet)?",opts:["abcdec","ababc","babac","aabbc"],ans:0},
+    {q:"What style is Chibuike's poem 'A Government Driver on His Retirement' best described as?",opts:["Narrative","Monologic","Reflective","Panegyric"],ans:2},
+    {q:"In Buchi Emecheta's Second Class Citizen, Adah is deeply obsessed with seeing the sleek woman at the hospital because the woman does what?",opts:["Has a doting, devoted husband","Has a high-paying professional job","Gives birth to twins","Lives in a grand and beautiful mansion"],ans:2}
+  ],
+
+  Chemistry: [
+    {q:"What is the smallest particle of an element that can take part in a chemical reaction?",opts:["Molecule","Atom","Ion","Compound"],ans:1},
+    {q:"Which of the following is an example of a physical change?",opts:["Burning of paper","Rusting of iron","Melting of ice","Digestion of food"],ans:2},
+    {q:"The total number of protons found in the nucleus of an atom is known as what?",opts:["Mass number","Atomic number","Valency","Isotope number"],ans:1},
+    {q:"Which gas is primarily responsible for the greenhouse effect and global warming?",opts:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],ans:2},
+    {q:"What is the name of the process by which a solid changes directly into a gas without passing through the liquid state?",opts:["Evaporation","Sublimation","Condensation","Diffusion"],ans:1},
+    {q:"Which of the following elements is classified as a noble gas?",opts:["Chlorine","Helium","Oxygen","Nitrogen"],ans:1},
+    {q:"What is the pH value of a neutral solution at room temperature?",opts:["0","7","14","1"],ans:1},
+    {q:"Which of the following compounds is formed by covalent bonding?",opts:["NaCl (sodium chloride)","KBr (potassium bromide)","H₂O (water)","CaO (calcium oxide)"],ans:2},
+    {q:"Which of the following metals reacts vigorously with cold water to produce hydrogen gas?",opts:["Iron","Sodium","Copper","Silver"],ans:1},
+    {q:"What is the molar volume of any gas measured at standard temperature and pressure (STP)?",opts:["11.2 dm³","22.4 dm³","24 dm³","1 dm³"],ans:1},
+    {q:"What is the name of the industrial process of coating iron or steel with a layer of zinc to prevent rusting?",opts:["Alloying","Galvanizing","Electrolysis","Refining"],ans:1},
+    {q:"Which of the following is classified as a strong acid?",opts:["CH₃COOH (ethanoic acid)","HCl (hydrochloric acid)","NH₃ (ammonia)","NH₄OH (ammonium hydroxide)"],ans:1},
+    {q:"What is the correct electron configuration of a sodium atom (atomic number 11)?",opts:["2, 8, 1","2, 8, 2","2, 7, 1","2, 8, 3"],ans:0},
+    {q:"Which of the following substances is commonly used as a drying agent in chemistry?",opts:["NaCl (sodium chloride)","CaCl₂ (anhydrous calcium chloride)","HCl (hydrochloric acid)","NaOH (sodium hydroxide)"],ans:1},
+    {q:"Which law states that matter (mass) can neither be created nor destroyed in a chemical reaction?",opts:["Law of definite proportions","Law of conservation of mass","Avogadro's law","Boyle's law"],ans:1},
+    {q:"Which of the following solutions is able to conduct electricity and is therefore classified as an electrolyte?",opts:["Sugar solution","Ethanol","NaCl solution (sodium chloride dissolved in water)","Kerosene"],ans:2},
+    {q:"What type of chemical bond is formed when electrons are completely transferred from one atom to another?",opts:["Covalent bond","Ionic bond","Metallic bond","Hydrogen bond"],ans:1},
+    {q:"What is the main constituent (chemical compound) of natural gas?",opts:["Ethane","Methane","Propane","Butane"],ans:1},
+    {q:"At what condition does a liquid reach its boiling point?",opts:["When its vapour pressure equals the atmospheric pressure","When its molecules stop moving","When it begins to freeze","When evaporation comes to a stop"],ans:0},
+    {q:"When an acid reacts with a carbonate compound, what gas is produced?",opts:["Oxygen","Hydrogen","Carbon dioxide","Nitrogen"],ans:2},
+    {q:"What is the valency (combining power) of carbon?",opts:["2","3","4","1"],ans:2},
+    {q:"What is the SI unit used to measure the amount of a substance?",opts:["Gram","Mole","Litre","Kilogram"],ans:1},
+    {q:"Which industrial process is used in the manufacture of ammonia (NH₃)?",opts:["Contact process","Haber process","Ostwald process","Solvay process"],ans:1},
+    {q:"What is the chemical formula of quicklime?",opts:["CaCO₃","CaO","Ca(OH)₂","CaSO₄"],ans:1},
+    {q:"What is the name of the chemical reaction between an acid and a base that produces salt and water?",opts:["Oxidation","Reduction","Neutralization","Hydrolysis"],ans:2},
+    {q:"Which element has an atomic number of 8?",opts:["Nitrogen","Oxygen","Fluorine","Neon"],ans:1},
+    {q:"Approximately what percentage of the air we breathe is made up of oxygen?",opts:["21%","78%","50%","10%"],ans:0},
+    {q:"Which of the following is a metallic alloy (a mixture of two or more metals)?",opts:["Brass","Oxygen","Water","Sodium chloride"],ans:0},
+    {q:"Which two substances must be present simultaneously for iron to rust?",opts:["Oxygen only","Water only","Oxygen and water","Nitrogen and water"],ans:2},
+    {q:"Which chemical substance is used in the laboratory to test for the presence of carbon dioxide gas?",opts:["Limewater","Litmus paper","Methyl orange","Phenolphthalein"],ans:0},
+    {q:"Which of the following elements is classified as a transition metal?",opts:["Sodium","Calcium","Iron","Potassium"],ans:2},
+    {q:"Which of the following organic compounds contains a double bond between carbon atoms and is therefore classified as unsaturated?",opts:["Ethane (C₂H₆)","Methane (CH₄)","Ethene (C₂H₄)","Propane (C₃H₈)"],ans:2},
+    {q:"What form of energy is required to drive the process of electrolysis?",opts:["Heat energy","Electrical energy","Light energy","Sound energy"],ans:1},
+    {q:"What is the IUPAC name of the organic compound with the molecular formula CH₄?",opts:["Methane","Ethane","Propane","Butane"],ans:0},
+    {q:"A compound produces an orange-red colour when introduced into a non-luminous Bunsen flame. Which ion is likely present in the compound?",opts:["Na⁺ (sodium ion)","K⁺ (potassium ion)","Ca²⁺ (calcium ion)","Fe²⁺ (iron II ion)"],ans:0},
+    {q:"Which of the following organic compounds is very soluble in water?",opts:["CH₃COOH (ethanoic acid)","C₂H₂ (ethyne)","C₂H₄ (ethene)","CH₃COOC₂H₅ (ethyl ethanoate)"],ans:0},
+    {q:"When benzene reacts with hydrogen gas in the presence of a nickel catalyst at 180°C, what product is formed?",opts:["Xylene","Toluene","Cyclopentane","Cyclohexane"],ans:3},
+    {q:"Which organic gas is commonly used to speed up (hasten) the ripening of fruits?",opts:["Ethene","Propane","Methane","Butane"],ans:0},
+    {q:"What type of bonding exists in the complex ion [Cu(NH₃)₄]²⁺?",opts:["Coordinate (dative) bond","Electrovalent (ionic) bond","Metallic bond","Pure covalent bond"],ans:0},
+    {q:"What is the pH of a 0.001 mol/dm³ solution of sodium hydroxide (NaOH) at room temperature?",opts:["14","13","12","11"],ans:1}
+  ],
+
+  Physics: [
+    {q:"Which of the following physical quantities is a scalar quantity?",opts:["Velocity","Acceleration","Displacement","Temperature"],ans:3},
+    {q:"Which of the following correctly defines pressure?",opts:["Force per unit area","Mass per unit volume","Energy per unit time","Work done per unit distance"],ans:0},
+    {q:"A 2 kg block is attached to a spring with spring constant 100 N/m. If the block is displaced by 0.2 m from its equilibrium position, what is the magnitude of the restoring force?",opts:["10 N","20 N","40 N","50 N"],ans:1},
+    {q:"A body is said to be in motion when it does which of the following?",opts:["Remains at rest","Changes its position with time","Stays in the same position","Maintains a constant velocity"],ans:1},
+    {q:"What does the law of conservation of energy state?",opts:["Energy can be created and destroyed","The total energy in an isolated system remains constant","Energy only changes from one form to another","None of the above"],ans:1},
+    {q:"What is the value of acceleration due to gravity at the surface of the Earth?",opts:["9.8 m/s²","10 m/s²","9.81 m/s²","8.9 m/s²"],ans:2},
+    {q:"What is the primary function of a fuse in an electric circuit?",opts:["To increase the voltage","To decrease resistance","To protect the circuit against overcurrent","To filter out alternating current"],ans:2},
+    {q:"A 10 kg block is lifted vertically upwards through a height of 2 m. What is the work done on the block? (g = 10 m/s²)",opts:["100 J","200 J","196 J","400 J"],ans:1},
+    {q:"What is the principle behind the operation of a transformer?",opts:["Electromagnetic induction","Electromagnetic radiation","Electrostatic induction","Magnetic resonance"],ans:0},
+    {q:"A car travels a distance of 200 km in 4 hours. What is the average speed of the car?",opts:["25 km/h","50 km/h","75 km/h","100 km/h"],ans:1},
+    {q:"A 5 kg block is moving with a velocity of 4 m/s. What is the kinetic energy of the block?",opts:["20 J","40 J","80 J","100 J"],ans:1},
+    {q:"Which of the following devices operates based on the magnetic effect produced by an electric current?",opts:["Rheostat","Thermostat","Electric bell","Carbon microphone"],ans:2},
+    {q:"The gravitational force between two masses P and Q is 10 N. If both masses are doubled while the distance between them remains unchanged, what will be the new gravitational force?",opts:["40.0 N","20.0 N","10.0 N","2.5 N"],ans:0},
+    {q:"The functioning of a photovoltaic cell depends on the action of which type of material?",opts:["Semi-conductor","Conductor","Chemical substance","Insulator"],ans:0},
+    {q:"Which of the following correctly expresses the power of a lens in diopters?",opts:["3f","1/f","2f","f"],ans:1},
+    {q:"What type of energy is stored in the food we consume?",opts:["Kinetic energy","Mechanical energy","Potential energy","Chemical energy"],ans:3},
+    {q:"Which of the following substances has the lowest thermal conductivity?",opts:["Air","Ash","Glass","Water"],ans:0},
+    {q:"What is the name given to the distance between two consecutive troughs of a wave?",opts:["Two wavelengths","One wavelength","One-third wavelength","Half wavelength"],ans:1},
+    {q:"Which colour in the visible spectrum has the greatest wavelength?",opts:["Red","Blue","Yellow","Violet"],ans:0},
+    {q:"How are standing waves formed?",opts:["By waves vibrating in a vertical plane","By the motion of the source towards the observer","By the motion of the source away from the observer","By waves reflecting off a boundary and interfering with themselves"],ans:3},
+    {q:"The operation of an optical fibre is based on which principle?",opts:["Polarization of light","Total internal reflection (refraction of light)","Interference of light","Dispersion of light"],ans:1},
+    {q:"Which of the following quantities is a vector?",opts:["Electric charge","Electric field","Electric potential difference","Electric capacitance"],ans:1},
+    {q:"What is the total energy required to send a unit positive charge around a complete electrical circuit called?",opts:["Kinetic energy","Potential difference","Electromotive force","Electrical energy"],ans:2},
+    {q:"A block of ice is floating on water inside a container. If the ice melts completely, what will happen to the water level in the container?",opts:["It will increase","It will remain the same","It will decrease","It will first decrease then increase"],ans:1},
+    {q:"Why are X-rays used in the study of crystal structures?",opts:["Because they have an extremely short wavelength","Because they have a very long wavelength","Because they travel very fast","Because they are invisible"],ans:0},
+    {q:"In a reverse-biased p-n junction diode, electric current is carried by which charge carriers?",opts:["Electrons alone","Majority carriers","Minority carriers","Positive holes alone"],ans:2},
+    {q:"A short-sighted person has a far point of 95 cm. Which type of lens can be used to correct this defect?",opts:["A diverging mirror of focal length 95 cm","A plano-convex lens of focal length 90 cm","A diverging lens of focal length 95 cm","A converging lens of focal length 95 cm"],ans:2},
+    {q:"When an object sinks in water, what does this tell us about the object?",opts:["Its density is greater than that of water","The upthrust on it equals its weight","Its density is less than that of water","The water pressure is greater than its weight"],ans:0},
+    {q:"An electric oven is rated at 500 W and is connected to a 220 V supply. What is the current drawn by the oven?",opts:["4.88 A","2.27 A","6.43 A","3.23 A"],ans:1},
+    {q:"A refrigerator has a power rating of 150 W and operates continuously for 336 hours. What is the total electrical energy consumed in kilowatt-hours?",opts:["60.20 kWh","25.01 kWh","50.40 kWh","30.20 kWh"],ans:2},
+    {q:"Sound travels at 340 m/s in air. An observer hears a thunder clap 4 seconds after seeing a flash of lightning. How far away was the storm centre?",opts:["140 m","100 m","1360 m","240 m"],ans:2},
+    {q:"Which instrument is most suitable for accurately measuring very small electrical resistance?",opts:["Voltmeter","Wheatstone bridge","Rheostat","Potentiometer"],ans:1},
+    {q:"A swimming pool appears to have an apparent depth of 10 cm when viewed from above. Given that the refractive index of water is 1.33, what is the real depth of the pool?",opts:["7.5 cm","10.0 cm","13.3 cm","6.87 cm"],ans:2},
+    {q:"A machine operates with an efficiency of 80%. If the input work supplied to the machine is 200 J, what is the useful output work produced?",opts:["250 J","160 J","120 J","100 J"],ans:1},
+    {q:"Which of the following devices is NOT used for detecting nuclear radiation?",opts:["Electrophorus","Scintillation chamber","Geiger-Müller counter","Film badge"],ans:0},
+    {q:"Semiconductors are said to have a negative temperature coefficient of resistance. What does this mean about their resistance?",opts:["They have electrons and holes at high temperatures","Their resistance changes constantly with temperature","Their resistance increases as temperature rises","Their resistance decreases as temperature rises"],ans:3},
+    {q:"When a p-n junction diode is forward-biased, what happens to the depletion layer?",opts:["It narrows","It remains constant","It widens then narrows","It widens"],ans:0},
+    {q:"When a nucleus is formed by combining protons and neutrons, the actual mass of the nucleus is slightly less than the sum of the individual masses. What is the energy equivalent of this mass difference called?",opts:["Nuclear stability","Lost energy","Work function","Binding energy"],ans:3},
+    {q:"Consider these statements: I. The colour of light depends on its frequency. II. When white light passes through a triangular prism, yellow light is deviated more than green light. Which of these statements about dispersion is/are correct?",opts:["I and III only","I only","II and III only","I and II only"],ans:1},
+    {q:"An a.c. circuit has an e.m.f. of 12 V with a resistor of 8 Ω connected in series to an inductor of inductive reactance 16 Ω and a capacitor of capacitive reactance 10 Ω. What is the current flowing in the circuit?",opts:["1.4 A","14.0 A","1.2 A","12.0 A"],ans:2}
+  ],
+
+  Biology: [
+    {q:"What is the function of cilia in the organism Paramecium?",opts:["Locomotion","Respiration","Excretion","Defence"],ans:0},
+    {q:"Euglena can be classified as a plant mainly because it possesses which of the following structures?",opts:["Gullet","Flagellum","Chloroplast","Pellicle"],ans:2},
+    {q:"Which part of the alimentary canal represents its terminal (last) portion in a mammal?",opts:["Oesophagus","Stomach","Rectum","Colon"],ans:2},
+    {q:"An organism that feeds and lives on the remains of a dead plant is referred to as a what?",opts:["Parasite","Saprophyte","Enigma","Commensal"],ans:1},
+    {q:"What instrument is the Secchi disc used to determine?",opts:["Rainfall","Tides","Waves","Turbidity of water"],ans:3},
+    {q:"Which blood vessel is responsible for carrying digested food from the small intestine directly to the liver?",opts:["Renal artery","Hepatic portal vein","Hepatic artery","Renal vein"],ans:1},
+    {q:"For which of the following biological processes is nitrogen most directly utilized in living organisms?",opts:["Formation of ATP","Formation of glucose","Photosynthesis","Formation of amino acids"],ans:3},
+    {q:"Which organ in the body is responsible for producing bile?",opts:["Gall bladder","Pancreas","Spleen","Liver"],ans:3},
+    {q:"Which part of the human brain is primarily responsible for controlling reflex actions such as the rate of heartbeat and breathing?",opts:["Medulla oblongata","Cerebrum","Cerebellum","Pineal body"],ans:0},
+    {q:"Which of the following animals is cold-blooded?",opts:["Cat","Lizard","Whale","Bird"],ans:1},
+    {q:"The physical and behavioural characteristics shown by an organism are determined by which of the following?",opts:["Hormones only","Genes only","Both genes and environment","Environment only"],ans:2},
+    {q:"A tapeworm does not possess an alimentary canal. What is the reason for this?",opts:["It is autotrophic","It does not feed","It directly absorbs already-digested food from its host","It produces no digestive enzymes"],ans:2},
+    {q:"What structures make up the external ear of a mammal?",opts:["Pinna and tympanum","Pinna only","Pinna and auditory meatus","Auditory meatus only"],ans:2},
+    {q:"Which of the following animals does NOT have a jointed skeleton?",opts:["Spider","Snail","Millipede","Crab"],ans:1},
+    {q:"A man has normal haemoglobin with genotype AA and a woman has sickle-cell haemoglobin with genotype SS. What will be the genotype of their child?",opts:["AA","SS","AS","O"],ans:2},
+    {q:"Under which condition will Fehling's solution readily change from blue to brick-red?",opts:["When mixed with sugar solution in the cold","When warmed by itself","When mixed with a reducing sugar in the cold","When warmed with a solution of a reducing sugar"],ans:3},
+    {q:"The axial skeleton of a mammal does NOT include the bones of which part of the body?",opts:["Skull","Tail","Limbs","Back (vertebral column)"],ans:2},
+    {q:"Which mineral element is essential for the formation of haemoglobin in the blood?",opts:["Sodium","Iron","Calcium","Potassium"],ans:1},
+    {q:"Which of the following is an example of discontinuous variation in humans?",opts:["Skin colour","Height","Left-handedness","Weight"],ans:2},
+    {q:"Most cells in higher animals retain their ability to divide throughout life. Which type of cell is an exception to this?",opts:["Germ cells","Nerve cells","Red blood cells (erythrocytes)","White blood cells (leucocytes)"],ans:1},
+    {q:"A severe deficiency of the hormone thyroxine results in which medical condition?",opts:["Diabetes mellitus","Sexual underdevelopment","Cretinism","Gigantism"],ans:2},
+    {q:"The plant division Thallophyta is made up of which organisms?",opts:["Ferns and mosses","Algae and fungi","Mosses and liverworts","Fungi and ferns"],ans:1},
+    {q:"For an animal to have a diastema (a gap in the teeth), it must lack which type of teeth?",opts:["Incisors","Molars","Canines","Premolars"],ans:2},
+    {q:"Parenchyma cells serve as supporting tissue in a plant under which condition?",opts:["When they contain crystals","When they become turgid","When they become flaccid","When they lose their chloroplasts"],ans:1},
+    {q:"Which mineral nutrient is most easily leached out of the soil by rainwater?",opts:["Phosphorus","Nitrate","Calcium","Magnesium"],ans:1},
+    {q:"How does Hydra remove undigested food from its body?",opts:["By passing it back out through the mouth","By passing it out through the anus","By passing it through the body surface","By passing it through a contractile vacuole"],ans:0},
+    {q:"Which structural feature specifically adapts birds for flight?",opts:["Possession of scales","Possession of legs","Possession of light hollow bones","Possession of a pointed beak"],ans:2},
+    {q:"In what activity do the gill rakers of fishes primarily take part?",opts:["Feeding","Cellular respiration","Swimming","Diffusion"],ans:0},
+    {q:"In which of the following plants does epigeal germination occur?",opts:["Sorghum","Maize","Millet","Groundnut"],ans:3},
+    {q:"Which scientist made the greatest contribution to the study of genetics through his work on inheritance in pea plants?",opts:["Robert Hooke","Gregor Mendel","Charles Darwin","Thomas Morgan"],ans:1},
+    {q:"What are neurons that receive stimuli from the body or internal organs and transmit them towards the central nervous system called?",opts:["Motor neurons","Sensory neurons","Efferent neurons","Relay neurons"],ans:1},
+    {q:"Which of the following organisms stores carbohydrate in the form of glycogen?",opts:["Spirogyra","Mangifera (mango)","Rattus (rat)","Chlamydomonas"],ans:2},
+    {q:"Which sex-linked blood disorder is characterised by a failure of the blood to clot, causing severe bleeding even from a slight cut?",opts:["Anaemia","Anorexia","Haemophilia","Haemolysis"],ans:2},
+    {q:"What is the name of the band of connective tissue that links two bones together at a joint?",opts:["Tendon","Cartilage","Synovial membrane","Ligament"],ans:3},
+    {q:"Which instrument is used to measure the speed of wind?",opts:["Anemometer","Hydrometer","Wind vane","Barometer"],ans:0},
+    {q:"Which of the following organisms possesses a hydrostatic skeleton?",opts:["Tilapia (fish)","Hydra","Earthworm","Lizard"],ans:2},
+    {q:"In human reproduction, where does fertilisation of the egg by the sperm normally take place?",opts:["Lower part of the uterus","Upper part of the uterus","Lower part of the oviduct","Upper part of the oviduct (fallopian tube)"],ans:3},
+    {q:"In mammalian males, which structure is shared by both the excretory system and the reproductive system?",opts:["Ureter","Testes","Vas deferens","Urethra"],ans:3},
+    {q:"In the life cycle of a bryophyte, which phase is the dominant (larger and longer-living) phase?",opts:["Gametangium","Sporophyte","Gametophyte","Prothallus"],ans:2},
+    {q:"In the mammalian kidney, where exactly is the Bowman's capsule located?",opts:["In the ureter","In the pelvis","In the cortex","In the medulla"],ans:2}
+  ],
+
+  Government: [
+    {q:"Which of the following is NOT a recognised function of a political party in Nigeria?",opts:["To discuss and debate on political issues","To single-handedly organize elections","To organize and mobilize the electorate","To present its manifesto to the public"],ans:1},
+    {q:"Which of the following countries was a member of the Casablanca group of African nations?",opts:["Ethiopia","Ghana","Nigeria","Togo"],ans:1},
+    {q:"What is the title of the administrative head of a public corporation?",opts:["Director General","General Manager","Head of Department","Minister"],ans:1},
+    {q:"Which of the following is a typical example of a pressure group in Nigeria?",opts:["Federal Complaint Commission","Progressive Action Congress","Progressive Peoples Alliance","Supreme Council for Islamic Affairs"],ans:3},
+    {q:"Which major international organisation existed before the establishment of the United Nations Organisation (UNO)?",opts:["International Court of Justice","International Labour Organisation","League of Nations","Organisation of Petroleum Exporting Countries"],ans:2},
+    {q:"A system of government in which political power is derived from total control over the instruments of force is called what?",opts:["Monarchy","Oligarchy","Capitalism","Fascism"],ans:3},
+    {q:"The collective views and opinions of individuals in a society on a particular issue are referred to as what?",opts:["Public outcry","People's voice","Popular opinion","Public opinion"],ans:3},
+    {q:"The Nigerian Ports Authority is an example of which type of organisation?",opts:["Civil Service","Public Service","Public Corporation","Maritime Corporation"],ans:2},
+    {q:"Which of the following is NOT typically part of the electoral process in a representative government?",opts:["Free and fair elections","A free press","An independent electoral commission","Registration of births"],ans:3},
+    {q:"In what year was the Economic Community of West African States (ECOWAS) formally established?",opts:["1970","1972","1975","1976"],ans:2},
+    {q:"The absence of separation of powers is a key feature of which type of government?",opts:["Presidential system","Cabinet (parliamentary) system","Democratic government","Military government"],ans:3},
+    {q:"The right of a citizen to vote in elections and also to stand as a candidate for political office is known as what?",opts:["Fundamental human right","Freedom of expression","Franchise","Electoral right"],ans:2},
+    {q:"What is the key difference between pressure groups and political parties that sets them apart?",opts:["Pressure groups analyse election results","Pressure groups only articulate specific interests","Pressure groups aggregate all interests","Pressure groups do not contest elections — they only seek to influence decision makers"],ans:3},
+    {q:"The recruitment, appointment and promotion of civil servants in Nigeria is primarily the responsibility of which body?",opts:["Federal Character Commission","Civil Service Commission","National Universities Commission","Federal Judicial Commission"],ans:1},
+    {q:"The existence of a bipolar world (the rivalry between the USA and USSR) was a major factor in the formation of which international movement?",opts:["The Non-Aligned Movement","Technical Aid Corps","NEPAD","ECOMOG"],ans:0},
+    {q:"A form of government in which the powers of the state are determined by the will of the citizens is called what?",opts:["Monarchy","Aristocracy","Autocracy","Democracy"],ans:3},
+    {q:"What is the fundamental rationale and justification behind Nigeria's adoption of a federal system of government?",opts:["To promote the full autonomy of individual states","To establish a very powerful central government","To create more states within the country","To promote unity in diversity among the various ethnic and cultural groups"],ans:3},
+    {q:"Who was the most famous and influential leader of Italian Fascism in the 20th century?",opts:["Mao Tse Tung","Kim Jong-Un","Joseph Stalin","Benito Mussolini"],ans:3},
+    {q:"Strike action as a tool of persuasion and protest is most commonly used by which type of organisation?",opts:["Political parties","Traders' associations","Parliamentarians","Pressure groups and trade unions"],ans:3},
+    {q:"The political control and economic exploitation of a weaker people by a foreign power is known as what?",opts:["Colonialism","Neo-colonialism","Apartheid","Indirect rule"],ans:0},
+    {q:"Before an international treaty becomes legally binding on a country, it must first be approved and ratified by which arm of government?",opts:["The executive","The legislature","The judiciary","The military"],ans:1},
+    {q:"Which type of economic system encourages the state to own and control the means of production?",opts:["Socialism","Communism","Fascism","Capitalism"],ans:0},
+    {q:"Which specific local government reform in Nigeria prevented traditional rulers from directly engaging in partisan politics?",opts:["The 1960 Reform","The 1963 Reform","The 1976 Reform","The 1979 Reform"],ans:2},
+    {q:"Which political party controlled the government of the South-Western States of Nigeria after the 1979 General Elections?",opts:["NPN","GNPP","NAP","UPN"],ans:3},
+    {q:"Which commission in Nigeria is responsible for examining and investigating complaints of civil wrongs committed by government employees against ordinary citizens?",opts:["Public Complaints Commission","Civil Service Commission","Economic and Financial Crimes Commission","Judicial Service Commission"],ans:0},
+    {q:"During which military head of state's regime was the Nigerian Civil War (1967–1970) fought?",opts:["Aguiyi Ironsi","Yakubu Gowon","Murtala Muhammed","Olusegun Obasanjo"],ans:1},
+    {q:"A constitution is classified as federal when it fulfils which of the following conditions?",opts:["It provides for a presidential system of government","It is an unwritten constitution","It is simply not a unitary constitution","There is a clear constitutional division of powers between a central authority and component state authorities"],ans:3},
+    {q:"What are the four main attributes (core elements) that must be present for a political entity to be considered a sovereign state?",opts:["Government, police and armed forces","Population, territory, government, and sovereignty","Federal, state and local governments","A press, legislature, executive and judiciary"],ans:1},
+    {q:"What was the historical significance of the year 1914 in Nigerian history?",opts:["It was the year the British fully established their colonial rule over Nigeria","It was the beginning of the First World War","It was the year Lord Lugard effected the amalgamation of Northern and Southern Nigeria","It was the year the Nigerian railway system was completed"],ans:2},
+    {q:"How many states were created in Nigeria during General Yakubu Gowon's military regime in 1967?",opts:["4","12","19","21"],ans:1},
+    {q:"Who served as the first Governor-General of independent Nigeria?",opts:["Lord Lugard","Dr. Nnamdi Azikiwe","Sir James Robertson","Major-General Aguiyi-Ironsi"],ans:0},
+    {q:"In what year was the Organisation of African Unity (OAU) formally established?",opts:["1946","1956","1960","1963"],ans:3},
+    {q:"Who was the first African person to serve as Secretary-General of the United Nations?",opts:["Boutros Boutros-Ghali","Joe Garba","Ibrahim Gambari","Kofi Annan"],ans:3},
+    {q:"Nigeria played the leading and pioneering role in the formation of ECOWAS during the government of which leader?",opts:["Olusegun Obasanjo","Yakubu Gowon","Murtala Muhammad","Ibrahim Babangida"],ans:1},
+    {q:"Which of the following is a typical example of delegated legislation?",opts:["An Act of Parliament","A Bill","A Decree","A Bye-law"],ans:3},
+    {q:"What is the complete and accurate meaning of the constitutional principle known as the 'rule of law'?",opts:["Nobody is above the law","Everybody is equal before the law","We are being governed by lawyers","Both: nobody is above the law AND everyone is equal before it"],ans:3},
+    {q:"In a federal system of government such as Nigeria's, which level of government are the Local Governments directly responsible and accountable to?",opts:["The Federal (Central) Government","The State Government","Both the Federal and State Governments","No other level of government"],ans:1},
+    {q:"An electoral process in which political party members themselves vote to select candidates for elective offices is called what?",opts:["Primary election","Electoral college","Bye-election","General election"],ans:0},
+    {q:"Which Nigerian constitution was the first to formally recognise local government as a third tier of government?",opts:["The 1960 Constitution","The 1963 Constitution","The 1979 Constitution","The 1946 Constitution"],ans:2},
+    {q:"Which two West African leaders played the most prominent and decisive roles in the founding of ECOWAS?",opts:["Gowon and Eyadema","Kountche and Senghor","Kerekou and Tubman","Acheampong and Jawara"],ans:0}
+  ],
+
+  CRS: [
+    {q:"What effect did the sudden deaths of Ananias and Sapphira have on the early Christian disciples?",opts:["Many more disciples were won to God","Great fear gripped them all","The disciples became more united","Apostle Peter was highly respected"],ans:1},
+    {q:"Paul and Barnabas were sent out on the first missionary journey from Antioch to Seleucia by whom?",opts:["Prophets and teachers","Church elders","Other disciples","The Holy Spirit"],ans:0},
+    {q:"Jesus said: 'We must work the works of him who sent me while it is day.' He made this statement after healing which person?",opts:["A centurion's servant","Ten lepers","A man born blind","A paralytic man"],ans:2},
+    {q:"After Mary Magdalene said 'They have taken the Lord out of the tomb, and we do not know where they have laid him', what happened immediately?",opts:["Peter and another disciple ran towards the tomb","The guards were afraid and ran away from the tomb","Mary stood weeping outside the tomb","Two angels appeared to Mary by the tomb"],ans:0},
+    {q:"Gamaliel said: 'If this plan or this undertaking is of man, it will fail; but if it is of God, you will not be able to overthrow them.' Who was Gamaliel referring to?",opts:["Peter and John","Peter and the apostles","Paul and Silas","Paul and Barnabas"],ans:1},
+    {q:"Why did Jesus declare that men loved darkness rather than light?",opts:["Their hearts were hardened","They had no truth","They had been blinded","Their deeds were evil"],ans:3},
+    {q:"Peter said: 'This Jesus God raised up, and of that we all are witnesses.' On what occasion did Peter make this statement?",opts:["His sermon on the day of Pentecost","His release from prison by the Jews","His healing of the lame man at the gate called Beautiful","His address to the disciples for the replacement of Judas"],ans:0},
+    {q:"According to John's Gospel, a person who does not believe in the only Son of God is already in what condition?",opts:["None of his own","Not worthy of the Kingdom","Cast off as a branch","Condemned already"],ans:3},
+    {q:"The stranger on the road to Emmaus asked: 'Are you the only visitor to Jerusalem who does not know the things that have happened there in these days?' What things were being referred to?",opts:["The arrest, trials and judgement of Jesus","The crucifixion, death and resurrection of Jesus","The triumphal entry and cleansing of the temple","The birth and presentation of Jesus"],ans:1},
+    {q:"According to Paul in Romans, what was the purpose of the Law?",opts:["To make men righteous","To increase trespasses and expose sin","To give grace to the humble","To reveal ungodliness"],ans:1},
+    {q:"According to Peter, Christians who suffer according to the will of God will receive what?",opts:["Forgiveness of all sins","The Crown of Glory","The Holy Spirit","A special blessing"],ans:1},
+    {q:"Paul declared that Christians have the same functions but different gifts. He said they have these gifts according to what?",opts:["Their devotion of prayer","Their suffering and endurance","The grace given to them","The enablement by the Spirit"],ans:2},
+    {q:"According to Romans, just as one man's trespass led to condemnation for all, what does one man's act of righteousness lead to?",opts:["Acquittal and life for all men","Salvation and new life for all men","Justification and hope for all men","Sanctification and life for all men"],ans:0},
+    {q:"James says: 'Let steadfastness have its full effect.' What does James say will be the outcome of this?",opts:["Righteousness and faith","Trial and endurance","Humanity and obedience","Perfection and completion"],ans:3},
+    {q:"Paul wrote: 'Have this mind among yourselves, which is yours in Christ Jesus.' What does 'this mind' refer to in Paul's statement?",opts:["Humanity","Faith","Holiness","Prayer"],ans:1},
+    {q:"Peter teaches that servants should be submissive to their masters with all respect, not only to the kind and gentle but also to what other type of master?",opts:["Impatient","Inconsiderate","Wicked","Overbearing"],ans:3},
+    {q:"In Romans, Christians are admonished to put on the Lord Jesus Christ and NOT to do which of the following?",opts:["Rely on the law","Judge one another","Make provision for the flesh","Take advantage of one another"],ans:2},
+    {q:"Paul teaches that those who have been baptised into Christ have been baptised into His what?",opts:["Service","Death","Kingdom","Suffering"],ans:1},
+    {q:"On the third day after the Philistines captured the Ark of God, what did they discover when they entered the temple of Dagon?",opts:["Dagon, their god, had fallen and broken to pieces","Dagon had disappeared from his place","The Ark had swallowed Dagon, their god","The Ark had been standing on Dagon"],ans:0},
+    {q:"One of the sins of Manasseh for which the LORD sent bands of Chaldeans, Syrians, Moabites and Ammonites to destroy Judah was what?",opts:["The release of a thousand captives","His failure to obey God's prophets","The arrest of the King of Babylon","The shedding of innocent blood"],ans:3},
+    {q:"Elijah decreed that there would be neither rain nor dew for three years because Ahab did which of the following?",opts:["Ahab had forsaken the commandment of God by erecting an altar for Baal","Nebat the son of Rehoboam connived with Ahab to kill him","He was sure he would be fed by the ravens","Jezebel the wife of Ahab killed Obadiah"],ans:0},
+    {q:"God called Jonah and sent him to the people of Nineveh to do what?",opts:["Pray for their repentance","Pray to God for their forgiveness","Cry against their wickedness","Preach His word of redemption"],ans:3},
+    {q:"Consequent upon the murder of Naboth by Ahab and Jezebel, God declared through Elijah that what would happen?",opts:["Dogs would lick Ahab's blood where they had licked Naboth's","Ahab's descendants would never ascend the throne of Israel","He would require the blood of Naboth from Ahab's hand","The sword would not depart from the house of Ahab"],ans:3},
+    {q:"According to the prophet Amos, why did God decide to raise up a nation that would fight against and oppress Israel?",opts:["The people were corrupt and enslaved the poor","They claimed to achieve fame by their own strength","They rejected him and sold the righteous for silver","They turned justice into poison"],ans:2},
+    {q:"What did King Josiah do to the altar that had been erected by Jeroboam at Bethel?",opts:["He rained cursed upon it","He removed its items","He broke its stones into pieces","He burnt it down"],ans:3},
+    {q:"Jesus said: 'It is not good that the man should be alone; I will make him a helper fit for him.' What was the very first thing God did after making this statement?",opts:["He formed beasts and birds and brought them to the man","He took one of the man's ribs and closed up its place with flesh","He made a rib into a woman and brought her to the man","He caused a deep sleep to fall upon the man"],ans:0},
+    {q:"Why did Joseph's brothers decide not to kill him when they found an opportunity?",opts:["They pleaded with him","He was loved by their father","He was their brother and their flesh","He was the first son of his mother"],ans:2},
+    {q:"King Saul ordered that those who had opposed his ascent to the throne should not be put to death. Why?",opts:["God had wrought deliverance in Israel","They had fought bravely in battle","They had been reconciled with him","God had forgiven their evil intentions"],ans:0},
+    {q:"After Saul realised that God would have nothing to do with him, he sought the help of whom?",opts:["Achish","A prophet","Samuel","A medium"],ans:3},
+    {q:"A promise made by King Saul to anyone who could face and defeat Goliath was what?",opts:["Giving his daughter in marriage to the person","Making the person second in command in Israel","Giving the person part of his land","Making the person the captain of his army"],ans:0},
+    {q:"The LORD said to Moses that the people should gather just a day's portion of bread so that He might test their what?",opts:["Self-control","Patience","Obedience","Faith"],ans:3},
+    {q:"What were the Israelites asked to do before meeting with God on Mount Sinai?",opts:["To be consecrated and have their garments washed","To touch the border of the mountain","To fast and have their feet washed","To fast, pray and be consecrated"],ans:0},
+    {q:"Satan said: 'All these I will give you if you fall down and worship me.' Where was Jesus when this statement was made?",opts:["During his ascension","During His sermon on the mount","During His temptation","At His triumphal entry into Jerusalem"],ans:2},
+    {q:"According to James, what does God promise to those who love Him?",opts:["Eternal life","Abundant blessing","Honourable position in life","Heirs of the kingdom"],ans:3},
+    {q:"According to Paul, a ruler does not bear the sword in vain but does what instead?",opts:["Leads men into the ways of God","Executes God's wrath on the wrongdoer","Rules as influenced by the people","Enforces civil duties"],ans:1},
+    {q:"In Paul's Epistle to the Galatians, as long as a person is still a child, he is under the care of whom?",opts:["Guardians","Custodians","Protectors","Teachers"],ans:0},
+    {q:"According to Peter, believers who are reproached for the name of Christ are blessed because what rests upon them?",opts:["The glory and power of God","The patience of God","The spirit of hope","The spirit of God"],ans:3},
+    {q:"In interpersonal relationships, Paul advises believers to do which of the following?",opts:["Emulate his good gestures","Obey the law of Moses","Think with sober judgement","Think of others first"],ans:3},
+    {q:"In his letter to Philemon, Paul described Onesimus as his what?",opts:["Brother","Fellow worker","Fellow prisoner","Child"],ans:3},
+    {q:"In writing to the Thessalonians, Paul advises believers awaiting the coming of the Lord to put on what?",opts:["Armour of hope","Helmet of righteousness","Breast plate of faith","Breast plate of salvation"],ans:0},
+    {q:"According to Paul in 1 Corinthians, the same Spirit gives different varieties of gifts while the same Lord gives varieties of what?",opts:["Service","Prophecy","Working","Healing"],ans:0},
+    {q:"David did not allow Abishai to destroy Saul because David wanted to do what?",opts:["Believe in the judgement of God","Avoid being guilty before the Lord","Disarm Saul before killing him","See if Saul would repent eventually"],ans:1},
+    {q:"What is the reward for total obedience to the commandments of God according to Deuteronomy?",opts:["Wisdom","Life and length of days","Knowledge","Material possessions"],ans:1},
+    {q:"Adam named his wife Eve because she was what?",opts:["Deceived by the serpent","The one who misled him","The bone of his bones","The mother of all living"],ans:3},
+    {q:"What was Moses' immediate reaction when he cast his rod on the ground at Mount Horeb and it became a serpent?",opts:["He shouted for joy","He fled from it","He took it by the tail","He caught it immediately"],ans:1},
+    {q:"The consequence of King Solomon's failure to keep the LORD's commandment was what?",opts:["God's promise to tear away part of the kingdom","The disloyalty of his subjects","The rebellion of the vassal states against his rule","The loss of God's favour"],ans:0},
+    {q:"According to Prophet Isaiah, the creative ability of God is likened to that of whom?",opts:["A potter and his earthen vessel","A builder and his foundation","A farmer and his crop","A shepherd and his flock"],ans:0},
+    {q:"The greatest domestic problem that King David experienced — which almost cost him his kingdom — was what?",opts:["His adultery with Bathsheba","The killing of Uriah","The proclamation of Adonijah as king","The revolt of Absalom against him"],ans:3},
+    {q:"The declaration by God that He would make a nation of the son of the slave woman meant that He did what?",opts:["Recognized Ishmael as Abraham's descendant","Was not partial towards Isaac and Ishmael","Did not like the way Ishmael was sent out by Abraham","Was responsible for sending Ishmael out of Abraham's house"],ans:0},
+    {q:"The chief butler said to Pharaoh: 'I remember my faults today.' What were these faults referring to?",opts:["His sins before he was imprisoned by Pharaoh","His inability to interpret Pharaoh's dream","His inability to identify competent magicians and wise men","His forgetting the young Hebrew who interpreted his dream correctly while in prison"],ans:3},
+    {q:"Jesus said: 'The earth produced of itself, first the blade, then the ear, then the full grain in the ear.' This statement was made in the parable of the what?",opts:["Sower","Mustard seed","Weeds","Seed growing secretly"],ans:3},
+    {q:"Why was Peter frightened as he walked on the sea towards Jesus?",opts:["He saw a ghost","He doubted Jesus","He was afraid of the wind","It was dark and cloudy"],ans:2},
+    {q:"What did the blind man healed by Jesus near Jericho do immediately after receiving his sight?",opts:["He jumped for joy and went away","He thanked Jesus for healing him","He followed Jesus, glorifying God","He gave praise to God for making him whole"],ans:2},
+    {q:"According to Luke, what were the events surrounding the crucifixion of Jesus?",opts:["Cruxifixion, lots casting for His dress, scoffing and mockery","Mockery, lots casting for His dress, scoffing and cruxifixion","Lots casting for His dress, mockery, scoffing and cruxifixion","Cruxifixion, scoffing, mockery and lots casting for His dress"],ans:3},
+    {q:"The angel told Zachariah that John the Baptist would drink no wine nor strong drink because he would be what?",opts:["The forerunner of Jesus","One who only eats locusts and wild honey","Filled with the Holy Spirit","Called to baptise sinners who would come to him"],ans:0},
+    {q:"What were the two emblems Jesus used during the Last Supper?",opts:["The bread and the blood of the lamb","The bread and the wine","The unleavened bread and the fruit of the vine","His blood and his body"],ans:1},
+    {q:"The condition Peter gave for a person to replace Judas Iscariot was that he must be what?",opts:["A witness to Jesus' ministry","Full of faith","A disciple of John the Baptist","A Galilean"],ans:0},
+    {q:"Jesus said: 'They have wine no more.' Jesus' immediate response to this statement was what?",opts:["'Do whatever he tells you'","'Fill the pots with water'","'Draw some out and take it to the steward of the feast'","'O woman, what have you to do with me? My hour has not yet come'"],ans:3},
+    {q:"The Macedonians who travelled with Paul to Ephesus were who?",opts:["Alexander and Gaius","Demetrius and Aristarchus","Gaius and Aristarchus","Demetrius and Alexander"],ans:2},
+    {q:"Jesus said: 'O faithless and perverse generation, how long am I to be with you and bear with you?' To whom was this statement addressed?",opts:["The Jews because of their unbelief","His disciples because they could not heal","The Pharisee because of their hypocrisy","His own people because they did not give Him honour"],ans:1},
+    {q:"According to the first Epistle of John, to have the Son of God is to have what?",opts:["Salvation","The Holy Spirit","The Father","Life"],ans:3},
+    {q:"In the parable of the weeds, Jesus said the righteous will do what at the end of the age?",opts:["Live forever in the kingdom of God","Be set aside from all cause of sin","Enter into glory with the Son of man","Shine like the sun in their Father's kingdom"],ans:3},
+    {q:"The resolution of the Council at Jerusalem was that the Gentiles should abstain from what?",opts:["Adultery, greed, strangled meat and divination","Homosexuality, idolatry, fornication and strangled meat","Idolatry, unchastity, strangled meat and blood","Circumcision, whoremongering, homosexuality and falsehood"],ans:2},
+    {q:"Before the cock crowed, Peter denied Jesus three times. Who was the very first person to recognise Peter as a disciple of Jesus?",opts:["A bystander","A maid","One of the rulers","The High Priest"],ans:1},
+    {q:"Why did the woman with a flow of blood touch the garment of Jesus?",opts:["She had heard the reports about Jesus","She had suffered much under many physicians","The crowd would not allow her to speak to Jesus","She believed that she would be well"],ans:3},
+    {q:"In Paul's letter to the Thessalonians, believers were admonished to prepare for the Second Coming of Christ by doing which of the following?",opts:["Keeping awake and being sober","Praying and fasting","Preaching peace and tolerance","Encouraging idlers to work hard"],ans:0},
+    {q:"Paul taught the Romans that while they were yet enemies of God, they were reconciled to Him by what?",opts:["The suffering of Jesus Christ","The death of Jesus Christ","The ascension of Jesus Christ","The resurrection of Jesus Christ"],ans:1},
+    {q:"Paul declared to the believers in Corinth that no one can say 'Jesus is Lord' except by what?",opts:["Revelation knowledge","Grace","The Holy Spirit","Faith"],ans:2},
+    {q:"According to Peter, the genuineness of Christian faith is tested by what?",opts:["Trials","Fire","Suffering","Temptation"],ans:1},
+    {q:"In Colossians, Paul admonished believers not to lie to one another because they had done what?",opts:["Were joint heirs with Christ in the kingdom","Were waiting for the Second Coming of Christ","Had put off the old nature with its practices","Had known the truth from the very beginning"],ans:2},
+    {q:"Paul teaches that believers who maintain good conduct before governing authorities shall do what?",opts:["Receive approval","Enjoy peace","Be shown hospitality","Be highly honoured"],ans:0},
+    {q:"According to Peter, when the chief Shepherd would be manifested, what would the elders obtain?",opts:["An unfading crown of glory","A scepter of authority","A house of glory","A crown with stars"],ans:0},
+    {q:"Paul boasted about the believers in Corinth for their what?",opts:["Zeal in prayer","Offering for the saints","Maturity in Christ","Display of spiritual gifts"],ans:1},
+    {q:"Why did God exalt the name of Jesus above every other name in heaven and on earth?",opts:["Jesus was born in the likeness of man","As Son of God, He counted equality with God a thing to be grasped","In humility, he counted others better than Himself","He humbled Himself, became obedient to death, and was obedient even to death on a cross"],ans:3}
+  ]
+
+};
+
+/* ══════════════════════════════════════════
+   APP STATE
+══════════════════════════════════════════ */
+let S = {
+  name:'', reg:'',
+  subjects:['English'],
+  questions:{}, answers:{},
+  curSubj:'English', curIdx:{},
+  timer:null, timeLeft:7200
+};
+let extraSel = [];
+
+/* ══════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════ */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg = document.getElementById(id);
+  pg.classList.add('active');
+  window.scrollTo(0,0);
+}
+function shuffle(a){
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
+  return b;
+}
+
+/* ══════════════════════════════════════════
+   PAGE 1 → PAGE 2
+══════════════════════════════════════════ */
+function goToInstructions(){
+  const name = document.getElementById('inp-name').value.trim();
+  const reg  = document.getElementById('inp-reg').value.trim();
+  let ok=true;
+  if(!name){
+    document.getElementById('err-name').classList.add('show');
+    document.getElementById('inp-name').classList.add('error');
+    ok=false;
+  } else {
+    document.getElementById('err-name').classList.remove('show');
+    document.getElementById('inp-name').classList.remove('error');
+  }
+  const letters=(reg.match(/[A-Za-z]/g)||[]).length;
+  if(letters<2||reg.length<4){
+    document.getElementById('err-reg').classList.add('show');
+    document.getElementById('inp-reg').classList.add('error');
+    ok=false;
+  } else {
+    document.getElementById('err-reg').classList.remove('show');
+    document.getElementById('inp-reg').classList.remove('error');
+  }
+  if(!ok)return;
+  S.name=name; S.reg=reg.toUpperCase();
+  showPage('page-instructions');
+}
+
+/* ══════════════════════════════════════════
+   PAGE 2: SUBJECT SELECTION
+══════════════════════════════════════════ */
+function toggleSubj(card){
+  if(card.classList.contains('capped'))return;
+  const s=card.dataset.s;
+  if(card.classList.contains('selected')){
+    card.classList.remove('selected');
+    card.querySelector('.subj-check').innerHTML='';
+    extraSel=extraSel.filter(x=>x!==s);
+  } else {
+    if(extraSel.length>=3)return;
+    card.classList.add('selected');
+    card.querySelector('.subj-check').innerHTML='✓';
+    extraSel.push(s);
+  }
+  document.querySelectorAll('.subj-card:not(.locked)').forEach(c=>{
+    if(!c.classList.contains('selected')){
+      extraSel.length>=3?c.classList.add('capped'):c.classList.remove('capped');
+    }
+  });
+  document.getElementById('sel-info').textContent=`Choose 3 more subjects (${extraSel.length}/3 selected)`;
+  const btn=document.getElementById('btn-start');
+  if(extraSel.length===3){btn.style.display='block';}
+  else{btn.style.display='none';}
+}
+
+/* ══════════════════════════════════════════
+   PAGE 3: START EXAM
+══════════════════════════════════════════ */
+function startExam(){
+  S.subjects=['English',...extraSel];
+  S.questions={};S.answers={};S.curIdx={};
+  S.curSubj='English';S.timeLeft=7200;
+
+  S.subjects.forEach(subj=>{
+    let bank, count;
+    if(subj==='English'){
+      // 50 general + 10 Lekki Headmaster
+      const gen = shuffle(QB.EnglishGeneral).slice(0,50);
+      const lekki = shuffle(QB.LekkiHeadmaster).slice(0,10);
+      bank = shuffle([...gen,...lekki]); // mix them together
+      count = 60;
+    } else {
+      bank = shuffle(QB[subj]||[]).slice(0, 40);
+      count = 40;
+    }
+    S.questions[subj] = bank.slice(0, count);
+    S.answers[subj] = new Array(S.questions[subj].length).fill(null);
+    S.curIdx[subj] = 0;
+  });
+
+  document.getElementById('exam-name').textContent = S.name;
+  document.getElementById('exam-reg').textContent   = S.reg;
+  buildTabs();
+  renderQ(false);
+  startTimer();
+  showPage('page-exam');
+}
+
+/* ══════════════════════════════════════════
+   TABS
+══════════════════════════════════════════ */
+function buildTabs(){
+  const bar=document.getElementById('tabs-row');
+  bar.innerHTML='';
+  S.subjects.forEach(subj=>{
+    const btn=document.createElement('button');
+    btn.className='tab'+(subj===S.curSubj?' active':'');
+    btn.dataset.subj=subj;
+    btn.onclick=()=>switchSubj(subj);
+    const ans=S.answers[subj].filter(a=>a!==null).length;
+    const tot=S.questions[subj].length;
+    btn.innerHTML=`${subj}<span class="tab-prog">${ans}/${tot}</span>`;
+    bar.appendChild(btn);
+  });
+}
+function switchSubj(subj){
+  S.curSubj=subj;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.subj===subj));
+  renderQ(false);
+}
+
+/* ══════════════════════════════════════════
+   RENDER QUESTION
+══════════════════════════════════════════ */
+function renderQ(fromRight){
+  const subj=S.curSubj;
+  const idx=S.curIdx[subj];
+  const qs=S.questions[subj];
+  const q=qs[idx];
+  const total=qs.length;
+
+  // detect if it's a Lekki question
+  const isLekki = q.q.startsWith('[Lekki Headmaster]');
+  const displayQ = isLekki ? q.q.replace('[Lekki Headmaster] ','') : q.q;
+  const badgeHTML = isLekki
+    ? `<span class="q-type-badge badge-novel">📘 Lekki Headmaster</span>`
+    : (subj==='English' ? `<span class="q-type-badge badge-english">📝 English</span>` : '');
+
+  const letters=['A','B','C','D'];
+  const optsHTML = q.opts.map((o,i)=>`
+    <div class="opt${S.answers[subj][idx]===i?' selected':''}" onclick="selectAns(${i})" onmousemove="rippleHover(this,event)">
+      <div class="opt-letter">${letters[i]}</div>
+      <div class="opt-text">${o}</div>
+    </div>`).join('');
+
+  const pct=Math.round(((idx+1)/total)*100);
+
+  const html=`
+    <div class="q-wrap${fromRight?' slide-right':''}">
+      <div class="q-meta">
+        <span class="q-num">Q${idx+1} / ${total}</span>
+        ${badgeHTML}
+      </div>
+      <div class="q-card">
+        <div class="q-text">${displayQ}</div>
+        <div class="opts">${optsHTML}</div>
+      </div>
+      <div class="q-progress-bar">
+        <div class="q-progress-fill" style="width:${pct}%"></div>
+      </div>
+    </div>`;
+
+  document.getElementById('q-mount').innerHTML=html;
+  document.getElementById('btn-prev').disabled = idx===0;
+  document.getElementById('btn-next').disabled = idx===total-1;
+  document.getElementById('exam-scroll').scrollTop=0;
+}
+
+function rippleHover(el,e){
+  const r=el.getBoundingClientRect();
+  el.style.setProperty('--rx',(e.clientX-r.left)/r.width*100+'%');
+  el.style.setProperty('--ry',(e.clientY-r.top)/r.height*100+'%');
+}
+
+function selectAns(i){
+  const subj=S.curSubj;
+  const idx=S.curIdx[subj];
+  S.answers[subj][idx]=i;
+  // update opt classes without full re-render (smoother)
+  document.querySelectorAll('.opt').forEach((el,ei)=>{
+    el.classList.toggle('selected',ei===i);
+    el.querySelector('.opt-letter').style.animation='none';
+    if(ei===i){
+      requestAnimationFrame(()=>{
+        el.querySelector('.opt-letter').style.animation='';
+      });
+    }
+  });
+  buildTabs();
+}
+
+function navigate(dir){
+  const subj=S.curSubj;
+  const newIdx=S.curIdx[subj]+dir;
+  if(newIdx<0||newIdx>=S.questions[subj].length)return;
+  S.curIdx[subj]=newIdx;
+  renderQ(dir<0);
+}
+function skipQ(){
+  const subj=S.curSubj;
+  if(S.curIdx[subj]<S.questions[subj].length-1){
+    S.curIdx[subj]++;renderQ(false);
+  }
+}
+
+/* ══════════════════════════════════════════
+   TIMER
+══════════════════════════════════════════ */
+function startTimer(){
+  if(S.timer)clearInterval(S.timer);
+  S.timer=setInterval(()=>{
+    S.timeLeft--;
+    const h=Math.floor(S.timeLeft/3600);
+    const m=Math.floor((S.timeLeft%3600)/60);
+    const s=S.timeLeft%60;
+    const box=document.getElementById('timer');
+    box.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    box.className='timer';
+    if(S.timeLeft<=300)box.className='timer danger';
+    else if(S.timeLeft<=900)box.className='timer warn';
+    if(S.timeLeft<=0){clearInterval(S.timer);submitExam();}
+  },1000);
+}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+function openSubmitModal(){
+  let unanswered=0;
+  S.subjects.forEach(s=>{ unanswered+=S.answers[s].filter(a=>a===null).length; });
+  document.getElementById('modal-msg').textContent =
+    unanswered>0
+      ? `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`
+      : 'All questions answered. Ready to submit your exam?';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+/* ══════════════════════════════════════════
+   SUBMIT & RESULTS
+══════════════════════════════════════════ */
+function submitExam(){
+  closeModal();
+  if(S.timer)clearInterval(S.timer);
+
+  let totalQ=0,correct=0,wrong=0,skipped=0;
+  S.subjects.forEach(subj=>{
+    S.questions[subj].forEach((q,i)=>{
+      totalQ++;
+      const a=S.answers[subj][i];
+      if(a===null)skipped++;
+      else if(a===q.ans)correct++;
+      else wrong++;
+    });
+  });
+
+  const score=Math.round((correct/totalQ)*400);
+  document.getElementById('res-user').textContent=`${S.name} | ${S.reg}`;
+  document.getElementById('res-score').textContent=score;
+  document.getElementById('st-c').textContent=correct;
+  document.getElementById('st-w').textContent=wrong;
+  document.getElementById('st-s').textContent=skipped;
+
+  const grades=['🏆 Excellent Performance!','👍 Good Performance','📚 Fair Performance','📖 Needs Improvement'];
+  document.getElementById('res-grade').textContent =
+    score>=280?grades[0]:score>=200?grades[1]:score>=140?grades[2]:grades[3];
+
+  buildCorrections();
+  showPage('page-results');
+}
+
+function buildCorrections(){
+  const con=document.getElementById('corrections');
+  con.innerHTML='';
+  const letters=['A','B','C','D'];
+
+  S.subjects.forEach((subj,si)=>{
+    const wrongs=S.questions[subj].map((q,i)=>({q,i,a:S.answers[subj][i]}))
+      .filter(x=>x.a!==x.q.ans);
+    if(!wrongs.length)return;
+
+    const sec=document.createElement('div');
+    sec.className='subj-block';
+    sec.style.animationDelay=`${si*.1}s`;
+    sec.innerHTML=`<div class="subj-head">❌ ${subj} — ${wrongs.length} correction${wrongs.length>1?'s':''}</div>`;
+
+    wrongs.forEach(({q,i,a})=>{
+      const displayQ = q.q.startsWith('[Lekki Headmaster]')
+        ? q.q.replace('[Lekki Headmaster] ','') : q.q;
+      const yours = a!==null ? `${letters[a]}. ${q.opts[a]}` : 'Not answered';
+      const item=document.createElement('div');
+      item.className='corr-item';
+      item.innerHTML=`
+        <div class="corr-q">Q${i+1}. ${displayQ}</div>
+        <div class="corr-tags">
+          <span class="tag tag-c">✓ ${letters[q.ans]}. ${q.opts[q.ans]}</span>
+          <span class="tag tag-w">✗ ${yours}</span>
+        </div>`;
+      sec.appendChild(item);
+    });
+    con.appendChild(sec);
+  });
+
+  if(!con.innerHTML){
+    con.innerHTML='<div style="text-align:center;padding:32px;color:#4ade80;font-size:1.1rem;font-weight:700;animation:scaleIn .4s both">🎉 Perfect Score — All questions correct!</div>';
+  }
+}
+
+function retake(){
+  extraSel=[];
+  S.subjects=['English'];
+  document.querySelectorAll('.subj-card:not(.locked)').forEach(c=>{
+    c.classList.remove('selected','capped');
+    c.querySelector('.subj-check').innerHTML='';
+  });
+  document.getElementById('sel-info').textContent='Choose 3 more subjects (0/3 selected)';
+  document.getElementById('btn-start').style.display='none';
+  showPage('page-instructions');
+}
+
+/* Enter key support */
+['inp-name','inp-reg'].forEach(id=>{
+  document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')goToInstructions();});
+});
+</script>
+</body>
+</html>
